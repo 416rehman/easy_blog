@@ -35,7 +35,7 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             'avatar': forms.FileInput(attrs={'aria-label': 'Avatar'}),
             'bio': Textarea(attrs={'aria-label': 'bio', 'cols': 20, 'rows': 4, 'oninput': "auto_grow(this)",
-                                       'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Bio'}),
+                                   'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Bio'}),
         }
 
 
@@ -54,7 +54,7 @@ class PostForm(forms.ModelForm):
         }
 
 
-class ReportArticleForm(forms.ModelForm):
+class ReportForm(forms.ModelForm):
     class Meta:
         model = Report
-        fields = ('article', 'reason', 'comment', 'reporter')
+        fields = ('reason', 'comment')

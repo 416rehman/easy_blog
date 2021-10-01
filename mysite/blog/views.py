@@ -2,7 +2,7 @@ import json
 import re
 from itertools import chain
 from django.contrib import messages
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
@@ -12,13 +12,13 @@ from elasticsearch_dsl import Q
 from hitcount.views import HitCountDetailView
 
 from .documents import UserDocument, PostDocument
-from .forms import SignupForm, PostForm, ProfileForm, UserForm, ReportArticleForm
+from .forms import SignupForm, PostForm, ProfileForm, UserForm, ReportForm
 from .models import Post
 from django.conf import settings
 from django.apps import apps
 
 
-def TrendingArticlesView(request):
+def TrendingPostsView(request):
     queryset = q_filter = None
     if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
         queryset = apps.get_app_config('blog').trend_manager.trending_posts
@@ -28,7 +28,7 @@ def TrendingArticlesView(request):
         queryset = Post.objects.filter(status=1)
         q_filter = 'new'
 
-    return render(request, 'trending_articles.html', {'articles': queryset, 'filter': q_filter})
+    return render(request, 'trending_posts.html', {'posts': queryset, 'filter': q_filter})
 
 
 def TrendingAuthorsView(request):
@@ -42,6 +42,30 @@ def TrendingAuthorsView(request):
         q_filter = 'new'
 
     return render(request, 'trending_authors.html', {'authors': queryset, 'filter': q_filter})
+
+
+def SignUpView(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if request.method == 'GET':
+        form = SignupForm
+        return render(request, 'registration/signup.html', {'form': form})
+
+    else:
+        form = SignupForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            messages.add_message(request, messages.SUCCESS, 'Welcome to Easy Blog!')
+            return redirect('home')
+        else:
+            for e in form.errors:
+                messages.add_message(request, messages.ERROR, e)
+            return render(request, 'registration/signup.html', {'form': form, 'newPost': True})
 
 
 class PostDetailView(HitCountDetailView):
@@ -60,18 +84,6 @@ class PostDetailView(HitCountDetailView):
         return context
 
 
-class SignUpView(generic.CreateView):
-    form_class = SignupForm
-    success_url = reverse_lazy('login')
-    template_name = 'registration/signup.html'
-
-    # Protected route
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home')
-        return super(SignUpView, self).dispatch(request, *args, **kwargs)
-
-
 def ProfileView(request, username):
     if request.user.username == username:
         user = request.user
@@ -88,20 +100,27 @@ def ProfileView(request, username):
 
 
 def NewPostView(request):
-    form = PostForm(request.POST or None)
+    # if any pre-existing written data is in the session (before authentication), use that.
+    form = None
+    if 'form_data' in request.session:
+        data = json.loads(request.session['form_data'])
+        del request.session['form_data']
+        form = PostForm(data or None)
+    else:
+        form = PostForm(request.POST or None)
     return render(request, 'edit_post.html', {'form': form, 'newPost': True})
 
 
 def CreatePostView(request):
+    # if writing without authentication, save the data in session, and re-use it when logged in
     if not request.user.is_authenticated:
         request.session['form_data'] = json.dumps(request.POST)
-
         return redirect("%s?next=%s" % (settings.LOGIN_URL, reverse('create_post')))
 
     if request.method == 'GET':
         if 'form_data' in request.session:
             data = json.loads(request.session['form_data'])
-            del request.session['form_data']  # Delete the key once done
+            del request.session['form_data']
             form = PostForm(data or None)
             return render(request, 'edit_post.html', {'form': form, 'newPost': True})
     else:
@@ -216,7 +235,7 @@ class SearchView(generic.View):
             user_search = UserDocument.search().query(user_q)
             user_qs = user_search.to_queryset()
 
-        if not search_type or search_type == 'article':
+        if not search_type or search_type == 'post':
             fields = search_scope if search_scope else [
                 'title',
                 'excerpt',
@@ -229,7 +248,7 @@ class SearchView(generic.View):
             post_qs = post_search.to_queryset()
             post_qs = post_qs.filter(status=1)
 
-        if search_type == 'article' and search_sort and post_qs:
+        if search_type == 'post' and search_sort and post_qs:
             if search_sort == 'author':
                 post_qs = post_qs.order_by('author' if search_order == 'ascending' else '-author')
             elif search_sort == 'date':
@@ -258,19 +277,37 @@ class SearchView(generic.View):
                        'posts_only': not user_qs})
 
 
-def ReportArticleView(request, slug):
-    article = get_object_or_404(Post, slug=slug)
-    if article:
-        articleReportForm = ReportArticleForm(request.POST or None)
+def ReportPostView(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    if post:
+        postReportForm = ReportForm(request.POST or None)
 
-        if articleReportForm.is_valid():
-            new_report = articleReportForm.save(commit=False)
-            new_report.article = article
+        if postReportForm.is_valid():
+            new_report = postReportForm.save(commit=False)
+            new_report.post = post
             if request.user:
                 new_report.reporter = request.user
             new_report.save()
 
-            messages.add_message(request, messages.SUCCESS, 'Article Reported')
+            messages.add_message(request, messages.SUCCESS, 'Post Reported')
             return redirect('post_detail', slug=slug)
 
-        return render(request, 'report_post.html', context={'form': articleReportForm})
+        return render(request, 'report.html', context={'form': postReportForm})
+
+
+def ReportUserView(request, username):
+    user = get_object_or_404(get_user_model(), username=username)
+    if user:
+        userReportForm = ReportForm(request.POST or None)
+
+        if userReportForm.is_valid():
+            new_report = userReportForm.save(commit=False)
+            new_report.user = user
+            if request.user:
+                new_report.reporter = request.user
+            new_report.save()
+
+            messages.add_message(request, messages.SUCCESS, 'User Reported')
+            return redirect('profile_page', username=username)
+
+        return render(request, 'report.html', context={'form': userReportForm})

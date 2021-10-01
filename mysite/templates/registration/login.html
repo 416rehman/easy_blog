@@ -1,18 +1,28 @@
+{% extends 'base.html' %}
 
-  {% extends 'base.html' %}
+{% block title %}Forgot Your Password?{% endblock %}
 
-  {% block title %}Forgot Your Password?{% endblock %}
+{% block content %}
+<div class="center">
+<h1>Log In</h1>
 
-  {% block content %}
-  <div class="center">
-    <h1>Log In</h1>
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 40px;">
+        <a href="/recover/">Forgot Password?</a>
+        <a href="/auth/signup">Don't have an account? Sign Up</a>
+    </div>
+    <br>
+  <input type="submit" value="Log In">
+</form>
+</div>
+{% endblock %}
 
-    <form method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <a href="/recover/">Forgot Password?</a> <br><br>
-      <input type="submit" value="Log In">
-    </form>
-  </div>
-  {% endblock %}
+
+{% block styles %}
+    <style>
+        form input { width: 100%; }
+    </style>
+{% endblock %}
 

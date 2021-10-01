@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block homepage %}
     <div id="filter_controls">
-        <button class="flat active">Articles</button>
+        <button class="flat active">Posts</button>
         <button class="flat" onclick="location.href=`{% url 'home_authors' %}`">Authors</button>
         <form method="get">
             <select name="filter" id="filter" onchange="this.form.submit()">
@@ -11,21 +11,21 @@
         </form>
     </div>
     <div id="trending_container">
-        {% if not articles %}
+        {% if not posts %}
             <h1>No Trends Found</h1>
         {% endif %}
-        {% for article in articles %}
-            {% if article.status == 1 %}
+        {% for post in posts %}
+            {% if post.status == 1 %}
                 <div class="postcard">
-                    <a href="{% url 'post_detail' article.slug  %}">
+                    <a href="{% url 'post_detail' post.slug  %}">
                         <div class="postcard-infobar">
-                            <p id="postAuthor">@{{ article.author }}</p>
+                            <p id="postAuthor">@{{ post.author }}</p>
                         </div>
-                        <h3 id="postTitle">{{article.title | title }}</h3>
-                        <p id="postContent">{{article.excerpt | slice:":200" | title }}</p>
+                        <h3 id="postTitle">{{post.title | title }}</h3>
+                        <p id="postContent">{{post.excerpt | slice:":200" | title }}</p>
                         <div id="meta">
-                            <span id="date">{{ article.created_on}}</span>
-                            <span><ion-icon name="eye-outline"></ion-icon> {{article.views}}</span>
+                            <span id="date">{{ post.created_on}}</span>
+                            <span><ion-icon name="eye-outline"></ion-icon> {{post.views}}</span>
                         </div>
                     </a>
                 </div>

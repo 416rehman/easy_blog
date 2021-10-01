@@ -4,7 +4,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.core import mail
 from django.core.mail import get_connection, EmailMultiAlternatives
 from django.db import models
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
@@ -81,7 +81,7 @@ REASON = (
 class Report(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reported_users',
                              null=True, blank=True)
-    article = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reported_posts', null=True, blank=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reported_posts', null=True, blank=True)
     reporter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reported_by',
                                  null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -100,7 +100,7 @@ class Report(models.Model):
         if self.closing_comment and send_follow_up and self.reporter.email:
             context = {
                 'username': self.reporter,
-                'p1': "We wanted to follow-up with you regarding " + ('an article' if self.article else 'a user') +
+                'p1': "We wanted to follow-up with you regarding " + ('a post' if self.post else 'a user') +
                       " report you submitted on " + str(self.created_on.date()) +
                       (", with the following comment \"" + str(self.comment) + "\" " if self.comment else "."),
                 'p2': self.closing_comment,
@@ -117,7 +117,7 @@ class Report(models.Model):
             print('Report created email sent')
             context = {
                 'username': self.reporter,
-                'p1': "We want to thank you for reporting " + ('an article' if self.article else 'a user') +
+                'p1': "We want to thank you for reporting " + ('a post' if self.post else 'a user') +
                       " on our platform. ",
                 'p2': "After we have reviewed your report, you might receive a follow-up.",
             }
@@ -127,11 +127,6 @@ class Report(models.Model):
             from_email = 'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>'
             to = self.reporter.email
             mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-
-    def delete(self, using=None, keep_parents=False):
-        super(Report, self).delete(using=using, keep_parents=keep_parents)
-        print('parent is gone and so is this report')
-        print(self.reporter.email)
 
     def __str__(self):
         return str(self.pk)
@@ -152,7 +147,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=Post)
 def follow_up_post_reports(sender, instance, **kwargs):
-    reports = Report.objects.filter(article=instance)
+    reports = Report.objects.filter(post=instance)
     reporters = set()
     if reports:
         for r in reports:
@@ -163,13 +158,42 @@ def follow_up_post_reports(sender, instance, **kwargs):
             messages = []
             for reporter in reporters:
                 context = {"username": reporter.username,
-                           "p1": 'The article you reported has been removed. The article can be found below',
+                           "p1": 'The post you reported has been removed. Some info about post can be found below',
                            "lines": ['Title: ' + instance.title,
                                      'Excerpt: ' + instance.excerpt],
                            "p2": 'Thank you for your report.'
                            }
-                messages.append(('Your report has been received',
-                                 'Hi ' + reporter.username + '\n\nThe article you reported has been removed.\n\n Title: ' + instance.title + '\n Excerpt: ' + instance.excerpt + ' \n\nThank you for your report. \n\nSincerely, \nEasy Blog by Ahmadz.ai ',
+                messages.append(('Follow-up on your report',
+                                 'Hi ' + reporter.username + '\n\nThe post you reported has been removed.\n\n Title: ' + instance.title + '\n Excerpt: ' + instance.excerpt + ' \n\nThank you for your report. \n\nSincerely, \nEasy Blog by Ahmadz.ai ',
+                                 render_to_string('email_templates/static_email_template.html', {'context': context}),
+                                 'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>',
+                                 [reporter.email]))
+
+            send_mass_html_mail(messages, fail_silently=False)
+
+
+@receiver(pre_delete, sender=settings.AUTH_USER_MODEL)
+def follow_up_user_reports(sender, instance, **kwargs):
+    print(instance.username)
+    print(Report.objects.all())
+    reports = Report.objects.filter(user__username=instance.username)
+    print(reports)
+    reporters = set()
+    if reports:
+        for r in reports:
+            if r.reporter.email:
+                reporters.add(r.reporter)
+
+        if reporters:
+            messages = []
+            for reporter in reporters:
+                context = {"username": reporter.username,
+                           "p1": 'The user you reported has been removed. Some info can be found below',
+                           "lines": ['Username: ' + instance.username],
+                           "p2": 'Thank you for your report.'
+                           }
+                messages.append(('Follow-up on your report',
+                                 'Hi ' + reporter.username + '\n\nThe user you reported has been removed.\n\n Username: ' + instance.username + ' \n\nThank you for your report. \n\nSincerely, \nEasy Blog by Ahmadz.ai ',
                                  render_to_string('email_templates/static_email_template.html', {'context': context}),
                                  'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>',
                                  [reporter.email]))

@@ -10,9 +10,9 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('reporter', 'user', 'article', 'reason', 'created_on', 'comment')
+    list_display = ('reporter', 'user', 'post', 'reason', 'created_on', 'comment')
     list_filter = ('reason',)
-    search_fields = ['comment', 'user', 'article', 'reporter', 'closing_comment']
+    search_fields = ['comment', 'user', 'post', 'reporter', 'closing_comment']
 
 
 

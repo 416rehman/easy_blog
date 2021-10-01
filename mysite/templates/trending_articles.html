@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+{% block homepage %}
+    <div id="filter_controls">
+        <button class="flat active">Articles</button>
+        <button class="flat" onclick="location.href=`{% url 'home_authors' %}`">Authors</button>
+        <form method="get">
+            <select name="filter" id="filter" onchange="this.form.submit()">
+                <option value="trending">Trending</option>
+                <option value="new" {% if filter == 'new' %}selected{% endif %}>New</option>
+            </select>
+        </form>
+    </div>
+    <div id="trending_container">
+        {% if not articles %}
+            <h1>No Trends Found</h1>
+        {% endif %}
+        {% for article in articles %}
+            {% if article.status == 1 %}
+                <div class="postcard">
+                    <a href="{% url 'post_detail' article.slug  %}">
+                        <div class="postcard-infobar">
+                            <p id="postAuthor">@{{ article.author }}</p>
+                        </div>
+                        <h3 id="postTitle">{{article.title | title }}</h3>
+                        <p id="postContent">{{article.excerpt | slice:":200" | title }}</p>
+                        <div id="meta">
+                            <span id="date">{{ article.created_on}}</span>
+                            <span><ion-icon name="eye-outline"></ion-icon> {{article.views}}</span>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/trending.css' %}">
+{% endblock %}

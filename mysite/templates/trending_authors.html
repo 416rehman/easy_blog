@@ -1,0 +1,49 @@
+{% extends "index.html" %}
+{% block homepage %}
+    <div id="filter_controls">
+        <button class="flat" onclick="location.href=`{% url 'home' %}`">Articles</button>
+        <button class="flat active">Authors</button>
+        <form method="get">
+            <select name="filter" id="filter" onchange="this.form.submit()">
+                <option value="trending">Trending</option>
+                <option value="new" {% if filter == 'new' %}selected{% endif %}>New</option>
+            </select>
+        </form>
+    </div>
+    <div id="trending_container">
+        {% if not authors %}
+                <h1>No Trends Found</h1>
+        {% endif %}
+        {% for author in authors %}
+            {% if filter == 'trending' %}
+                <div>
+                    <a href="{% url 'profile_page' author.author__username %}" class="profile_card">
+                        <img src="{% if author.author__profile__avatar %}/media/{{author.author__profile__avatar}}{% else %}/media/images/profile/default.jpg{% endif %}" alt="{{author.author__username}}'s avatar">
+                        <div id="about">
+                            <span id="name">{{author.author__first_name | title}} {{author.author__last_name | title}}</span>
+                            <span id="username">@{{author.author__username}}</span>
+                            <p id="bio">{{author.author__profile__bio}}</p>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <div>
+                    <a href="{% url 'profile_page' author.username %}" class="profile_card">
+                        <img src="{% if author.profile.avatar %}/media/{{author.profile.avatar}}{% else %}/media/images/profile/default.jpg{% endif %}" alt="{{author}}'s avatar">
+                        <div id="about">
+                            <span id="name">{{author.first_name | title}} {{author.last_name | title}}</span>
+                            <span id="username">@{{author}}</span>
+                            <p id="bio">{{author.profile.bio}}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/trending.css' %}">
+{% endblock %}

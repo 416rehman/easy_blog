@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit Post{% endblock %}
+{% block content %}
+<div id="articleContainer" class="center">
+    <br>
+    <div class="articlebody">
+        <form method="post" {% if newPost %} action="{% url 'create_post' %}" {% endif %}>
+            {% csrf_token %}
+            <div id="postInfo">
+                {{form.status}}
+                <span><label for="id_tags">Tags </label>{{form.taglist}}</span>
+            </div>
+            <br>
+            {{form.title}}
+            <hr>
+            {{form.excerpt}}<br>
+            {{form.content}}
+            <hr>
+            {% if form.errors %}
+                {{form.errors}}
+            {% endif %}
+
+            <div>
+                <button type="submit">{% if newPost %} Create {% else %} Update {% endif %}</button>
+                <button type="button" onclick="window.history.go(-1); return false;">Cancel</button>
+            </div>
+            <br>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block styles %}
+    {{ form.media }}
+    <link rel="stylesheet" href="{% static 'css/edit_post.css' %}">
+    <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+{% endblock %}

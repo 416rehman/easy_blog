@@ -1,0 +1,21 @@
+#filter_controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#filter_controls > form {
+    margin-left: auto;
+}
+
+#trending_container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: min(90vw, 800px);;
+}
+
+.postcard {
+    width: 100%;
+    margin-bottom: 0;
+}

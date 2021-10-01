@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="profile" class="center">
+    <div class="about">
+        {% if requested_profile.profile.avatar %}
+        <img src="/media/{{requested_profile.profile.avatar}}"
+             alt="{{requested_profile.username}}'s avatar">
+        {% else %}
+        <img src="/media/images/profile/default.jpg"
+             alt="{{requested_profile.username}}'s avatar">
+        {% endif %}
+        {% if user == requested_profile %}
+        <a href="edit"><small><em>Edit</em></small></a>
+        {% endif %}
+        <h1>{{requested_profile.first_name}} {{requested_profile.last_name}}</h1>
+        <span>@{{requested_profile.username}}</span>
+        <p style="text-align: center">{{requested_profile.profile.bio}}</p>
+        <div id="socials">
+            {% if requested_profile.profile.website %}
+            <a href="{{requested_profile.profile.website}}/">Website</a>
+            {% endif %}
+            •
+            {% if requested_profile.profile.linkedin %}
+            <a href="{{requested_profile.profile.linkedin}}">LinkedIn</a>
+            {% endif %}
+            •
+            {% if requested_profile.profile.github %}
+            <a href="{{requested_profile.profile.github}}">Github</a>
+            {% endif %}
+        </div>
+        <div id="postsContainer">
+            {% for post in posts %}
+            {% if post.slug %}
+
+            <div class="postcard">
+                <a href="{% url 'post_detail' post.slug  %}">
+                    <div class="postcard-infobar">
+                        <p id="postAuthor">@{{ post.author }}</p>
+                        {% if post.status == 0 %}
+                        <div class="postcard-tag alert-error">Unpublished</div>
+                        {% endif %}
+                    </div>
+                    <h3 id="postTitle">{{post.title | title }}</h3>
+                    <p id="postContent">{{post.excerpt | slice:":200" | title }}</p>
+                    <div id="meta">
+                        <span id="date">{{ post.created_on}}</span>
+                        <span><ion-icon name="eye-outline"></ion-icon> {{post.views}}</span>
+                    </div>
+                </a>
+            </div>
+
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endblock %}
+
+    {% load static %}
+    {% block styles %}
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
+    {% endblock %}

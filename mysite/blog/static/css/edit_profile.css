@@ -1,0 +1,33 @@
+.edit_profile {
+    width: 700px;
+}
+
+#avatarContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+#id_bio {
+    resize: none;
+    width: 100%;
+}
+#avatar {
+    border-radius: 100%;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+}
+
+.form-group *:not(input) {
+    font-size: 14px;
+    color: var(--text-color-dim) !important;
+}
+
+.form-group #userDataContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+}

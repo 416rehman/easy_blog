@@ -1,0 +1,34 @@
+.dark {
+    --primary-color: #181a1b;
+    --secondary-color: #131313;
+    --tertiary-color: #272727;
+    --text-color: #cecac3;
+    --text-color-dim: #a29f9a;
+    --shadow: none;
+    --button-border: #2c2c2c;
+    --error: #FF9595;;
+    --error-bg: #2f1e1e;
+    --success: #c4d2c4;;
+    --success-bg: #232f1e;
+    --active_btn: rgb(61, 88, 124);
+    --border-radius: 0px;
+}
+.dark img, .dark iframe {
+    filter: brightness(90%);
+}
+
+.light {
+    --primary-color: #EFEFEF;
+    --secondary-color: #F9F9F9;
+    --tertiary-color: #e8e8e8;
+    --text-color: #090909;
+    --text-color-dim: #505050;
+    --shadow: 2px 2px 34px -11px #5E5E5E;
+    --button-border: #a1a1a1;
+    --error: #B50000;
+    --error-bg: #f2dede;
+    --success: #1a4e1b;;
+    --success-bg: #def2de;
+    --active_btn: rgb(99 133 179);
+    --border-radius: 0px;
+}

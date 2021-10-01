@@ -24,7 +24,8 @@ class PostDocument(Document):
         fields = [
             'title',
             'excerpt',
-            'taglist'
+            'taglist',
+            'raw_content'
         ]
 
 

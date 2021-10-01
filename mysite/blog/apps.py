@@ -10,4 +10,4 @@ class BlogConfig(AppConfig):
     def ready(self):
         from .trend_manager import TrendManager
         self.trend_manager = TrendManager()
-        self.trend_manager.start(0.1)
+        self.trend_manager.start(5)

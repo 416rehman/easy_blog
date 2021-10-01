@@ -1,8 +1,8 @@
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericRelation
 from django.core import mail
-from django.core.mail import send_mass_mail, get_connection, EmailMultiAlternatives
+from django.core.mail import get_connection, EmailMultiAlternatives
 from django.db import models
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
@@ -13,19 +13,20 @@ from django.utils.text import slugify
 from hitcount.models import HitCount
 from tinymce.models import HTMLField
 
-
 STATUS = (
     (0, "Draft"),
     (1, "Published")
 )
 
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     updated_on = models.DateTimeField(auto_now=True)
     excerpt = models.TextField(max_length=200, blank=False, null=False)
     content = HTMLField()
+    raw_content = models.TextField(blank=True, null=True, default='')
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     taglist = models.TextField(max_length=200, blank=True, null=True)
@@ -51,11 +52,13 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = unique_slugify(self, slugify(self.title))
+        if self.content:
+            self.raw_content = " ".join(strip_tags(str(self.content)).split())
         super().save(*args, **kwargs)
 
 
 class Profile(models.Model):  # add this class and the following fields
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(max_length=250, null=True, blank=True)
     avatar = models.ImageField(null=True, blank=True, upload_to="images/profile/", default="images/profile"
                                                                                            "/default.jpg")
@@ -65,17 +68,6 @@ class Profile(models.Model):  # add this class and the following fields
 
     def __str__(self):
         return str(self.user)
-
-    @receiver(post_save, sender=User)  # add this
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)  # add this
-    def save_user_profile(sender, instance, **kwargs):
-        if not instance.profile.avatar:
-            instance.profile.avatar = "images/profile/default.jpg"
-        instance.profile.save()
 
 
 REASON = (
@@ -87,9 +79,11 @@ REASON = (
 
 
 class Report(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_users', null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reported_users',
+                             null=True, blank=True)
     article = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reported_posts', null=True, blank=True)
-    reporter = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_by', null=True, blank=True)
+    reporter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='reported_by',
+                                 null=True, blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
     reason = models.IntegerField(choices=REASON, default=0)
     comment = models.TextField(max_length=250, null=True, blank=True)
@@ -143,6 +137,19 @@ class Report(models.Model):
         return str(self.pk)
 
 
+@receiver(post_save, sender=get_user_model())  # add this
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=get_user_model())  # add this
+def save_user_profile(sender, instance, **kwargs):
+    if not instance.profile.avatar:
+        instance.profile.avatar = "images/profile/default.jpg"
+    instance.profile.save()
+
+
 @receiver(post_delete, sender=Post)
 def follow_up_post_reports(sender, instance, **kwargs):
     reports = Report.objects.filter(article=instance)
@@ -170,7 +177,6 @@ def follow_up_post_reports(sender, instance, **kwargs):
             send_mass_html_mail(messages, fail_silently=False)
 
 
-
 def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None,
                         connection=None):
     """
@@ -194,11 +200,9 @@ def send_mass_html_mail(datatuple, fail_silently=False, user=None, password=None
     return connection.send_messages(messages)
 
 
-
 def unique_slugify(instance, slug):
     model = instance.__class__
     unique_slug = slug
     while model.objects.filter(slug=unique_slug).exists():
         unique_slug = slug + get_random_string(length=4)
     return unique_slug
-

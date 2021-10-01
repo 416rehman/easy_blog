@@ -5,7 +5,7 @@
     {% if not post %}
     <h1>The page you are looking for cannot be found...</h1>
     {% else %}
-    <article class="articlebody">
+    <div class="articlebody">
 
         <div id="toolbar">
             {% if post.author == user %}
@@ -81,7 +81,7 @@
             </div>
             <br>
         </div>
-    </article>
+    </div>
     {% endif %}
 
 </div>

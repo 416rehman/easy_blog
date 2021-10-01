@@ -50,10 +50,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tinymce',
+    'users',
     'blog',
     'hitcount',
     'django_cleanup.apps.CleanupConfig',
-    'django_elasticsearch_dsl'
+    'django_elasticsearch_dsl',
 ]
 
 MIDDLEWARE = [
@@ -167,7 +168,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 TINYMCE_EXTRA_MEDIA = {
     'css': {
         'all': [
@@ -210,27 +210,27 @@ TINYMCE_DEFAULT_CONFIG = {
     "content_style": "@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap'); body { "
                      "font-family: 'Merriweather', serif; font-size: min(4vw, 15px); color: var(--text-color); background-color: --var(primary-color);}"
                      "code {"
-                         "background-color: #828282 !important;"
-                         "border-radius: 2px;"
-                         "padding: 1px;"
+                     "background-color: #828282 !important;"
+                     "border-radius: 2px;"
+                     "padding: 1px;"
                      "}"
                      "span.mce-preview-object.mce-object-iframe {"
-                        "display: block;"
+                     "display: block;"
                      "}"
                      "p {"
-                        "font-family: 'Merriweather', serif;"
-                        "font-size:calc(13px + 0.4vw);"
-                        "font-weight: 400;"
-                        "letter-spacing: 0.003em;"
-                        "word-spacing: 0.05em;"
-                        "line-height: 32px;"
+                     "font-family: 'Merriweather', serif;"
+                     "font-size:calc(13px + 0.4vw);"
+                     "font-weight: 400;"
+                     "letter-spacing: 0.003em;"
+                     "word-spacing: 0.05em;"
+                     "line-height: 32px;"
                      "}"
                      "body {"
-                        "padding: 0 5px;"
-                        "background-color: var(--primary-color);"
+                     "padding: 0 5px;"
+                     "background-color: var(--primary-color);"
                      "}"
                      "iframe {"
-                        "width:100%;"
+                     "width:100%;"
                      "}"
                      ".mce-content-body:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before { color: #757575;}",
     "branding": False,
@@ -240,44 +240,44 @@ TINYMCE_DEFAULT_CONFIG = {
     "autosave_restore_when_empty": True,
     "allow_script_urls": True,
     "paste_postprocess": "function(plugin, args) {"
-                            "console.log(args.node.textContent);"
-                             # PDF smart embed
-                             "if (args.node.textContent.match(/(https?:\/\/)?([A-Za-z0-9\-]+)?\.([A-Za-z0-9\-]+)\.([A-Za-z0-9\-]+)(\/?.*\/(.+\.pdf$)$)/ig)) { "
-                                 "let br = document.createElement('br');"
-                                 "const pdfiframe = document.createElement('iframe');"
-                                 "pdfiframe.setAttribute('src', args.node.textContent);"
-                                 "pdfiframe.classList.add('pdf-iframe');"
-                                 "args.node.appendChild(br);"
-                                 "args.node.appendChild(pdfiframe);"
-                             "}"
-                             # GIST smart embed
-                             "else {"
-                                
-                                 "const regex = /(\<script src=\")(https:\/\/gist.github.com\/\S*\.js)(\"><\/script>)/ig;"
-                                 "let found = regex.exec(args.node.textContent);"
-                                 "let link;"
-                                 "if (found && found[2]) link = found[2];"
-                                 "else { "
-                                     "link = /https:\/\/gist.github.com\/\S*\/\S*/.exec(args.node.textContent);"
-                                     "if (link && link[0]) {"
-                                        "link = link[0];"
-                                        "if (link && !link.endsWith('.js')) link = link + '.js';"
-                                     "}"
-                                 "}"                         
-                                 "if (link) {"
-                                     "let br = document.createElement('br');"
-                                     "const random_id='_' + Math.random().toString(36).substr(2,9);"
-                                     "const gistiframe = document.createElement('iframe');"
-                                     "gistiframe.setAttribute('id', random_id);"
-                                     "gistiframe.setAttribute('src', `data:text/html;charset=utf-8, "
-                                            "<head><base target=\"_blank\"></head> <body><script src='${link}'></script>"
-                                            "<script type=\"text/javascript\">window.addEventListener(\"load\",function(){const myID='${random_id}';let o={iframeID: myID, height:document.body.scrollHeight,width:document.body.scrollWidth};window.parent.postMessage(o,\"*\")});</script>"
-                                            "</body>`);"
-                                     "gistiframe.classList.add('gist-iframe');"
-                                     "args.node.appendChild(br);"
-                                     "args.node.appendChild(gistiframe);"
-                                 "}"
-                             "}"
+                         "console.log(args.node.textContent);"
+    # PDF smart embed
+                         "if (args.node.textContent.match(/(https?:\/\/)?([A-Za-z0-9\-]+)?\.([A-Za-z0-9\-]+)\.([A-Za-z0-9\-]+)(\/?.*\/(.+\.pdf$)$)/ig)) { "
+                         "let br = document.createElement('br');"
+                         "const pdfiframe = document.createElement('iframe');"
+                         "pdfiframe.setAttribute('src', args.node.textContent);"
+                         "pdfiframe.classList.add('pdf-iframe');"
+                         "args.node.appendChild(br);"
+                         "args.node.appendChild(pdfiframe);"
+                         "}"
+    # GIST smart embed
+                         "else {"
+
+                         "const regex = /(\<script src=\")(https:\/\/gist.github.com\/\S*\.js)(\"><\/script>)/ig;"
+                         "let found = regex.exec(args.node.textContent);"
+                         "let link;"
+                         "if (found && found[2]) link = found[2];"
+                         "else { "
+                         "link = /https:\/\/gist.github.com\/\S*\/\S*/.exec(args.node.textContent);"
+                         "if (link && link[0]) {"
+                         "link = link[0];"
+                         "if (link && !link.endsWith('.js')) link = link + '.js';"
+                         "}"
+                         "}"
+                         "if (link) {"
+                         "let br = document.createElement('br');"
+                         "const random_id='_' + Math.random().toString(36).substr(2,9);"
+                         "const gistiframe = document.createElement('iframe');"
+                         "gistiframe.setAttribute('id', random_id);"
+                         "gistiframe.setAttribute('src', `data:text/html;charset=utf-8, "
+                         "<head><base target=\"_blank\"></head> <body><script src='${link}'></script>"
+                         "<script type=\"text/javascript\">window.addEventListener(\"load\",function(){const myID='${random_id}';let o={iframeID: myID, height:document.body.scrollHeight,width:document.body.scrollWidth};window.parent.postMessage(o,\"*\")});</script>"
+                         "</body>`);"
+                         "gistiframe.classList.add('gist-iframe');"
+                         "args.node.appendChild(br);"
+                         "args.node.appendChild(gistiframe);"
+                         "}"
+                         "}"
                          "}",
 }
 
@@ -299,3 +299,5 @@ ELASTICSEARCH_DSL = {
         'hosts': 'localhost:9200'
     },
 }
+
+AUTH_USER_MODEL = 'users.User'

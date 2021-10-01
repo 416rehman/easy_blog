@@ -2,6 +2,7 @@ import json
 import re
 from itertools import chain
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
@@ -12,7 +13,7 @@ from hitcount.views import HitCountDetailView
 
 from .documents import UserDocument, PostDocument
 from .forms import SignupForm, PostForm, ProfileForm, UserForm, ReportArticleForm
-from .models import Post, User, Report
+from .models import Post
 from django.conf import settings
 from django.apps import apps
 
@@ -37,7 +38,7 @@ def TrendingAuthorsView(request):
         q_filter = 'trending'
 
     if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
-        queryset = User.objects.filter(is_active=True).order_by('-date_joined')
+        queryset = get_user_model().objects.filter(is_active=True).order_by('-date_joined')
         q_filter = 'new'
 
     return render(request, 'trending_authors.html', {'authors': queryset, 'filter': q_filter})
@@ -76,7 +77,7 @@ def ProfileView(request, username):
         user = request.user
         posts = Post.objects.filter(author=user)
     else:
-        user = User.objects.get(username=username)
+        user = get_user_model().objects.get(username=username)
         posts = Post.objects.filter(author=user, status=1)
 
     context = {
@@ -172,7 +173,7 @@ def DeletePostView(request, slug):
 
 @login_required
 def EditProfileView(request, username):
-    instance = get_object_or_404(User, username=username)
+    instance = get_object_or_404(get_user_model(), username=username)
 
     if instance.username != request.user.username:
         return redirect('profile_page', username=username)
@@ -219,7 +220,8 @@ class SearchView(generic.View):
             fields = search_scope if search_scope else [
                 'title',
                 'excerpt',
-                'taglist'
+                'taglist',
+                'raw_content'
             ]
             post_q = Q('multi_match', query=request.GET.get('q'),
                        fields=fields, fuzziness='auto')

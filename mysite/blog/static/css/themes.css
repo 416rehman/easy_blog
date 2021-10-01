@@ -13,7 +13,7 @@
     --active_btn: rgb(61, 88, 124);
     --border-radius: 0px;
 }
-.dark img, .dark iframe {
+.dark img, .dark iframe:not(#id_content_ifr) {
     filter: brightness(90%);
 }
 

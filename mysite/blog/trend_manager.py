@@ -1,10 +1,7 @@
-import json
-
 from django.db.models import Sum
-
 from .models import Post
 from apscheduler.schedulers.background import BackgroundScheduler
-from django.core.serializers.json import DjangoJSONEncoder
+
 
 class TrendManager:
     upcoming_posts = None
@@ -18,7 +15,10 @@ class TrendManager:
         if self.upcoming_posts:
             self.trending_posts = self.upcoming_posts
             if self.trending_posts:
-                self.trending_authors = self.trending_posts.values('author', 'author__username', 'author__first_name', 'author__last_name', 'author__profile__bio', 'author__profile__avatar').order_by('author').annotate(total_views=Sum('hourly_views'))
+                self.trending_authors = self.trending_posts.values('author', 'author__username', 'author__first_name',
+                                                                   'author__last_name', 'author__profile__bio',
+                                                                   'author__profile__avatar').order_by(
+                    'author').annotate(total_views=Sum('hourly_views'))
                 print(f'Trending Authors: {bool(self.trending_authors)}')
 
         print(f'Trending Articles: {bool(self.trending_posts)}')

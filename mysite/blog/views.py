@@ -6,13 +6,13 @@ from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views import generic
+from django.views import generic, View
 from django.urls import reverse_lazy, reverse
 from elasticsearch_dsl import Q
 from hitcount.views import HitCountDetailView
 
 from .documents import UserDocument, PostDocument
-from .forms import SignupForm, PostForm, ProfileForm, UserForm, ReportForm
+from .forms import PostForm, ReportForm
 from .models import Post
 from django.conf import settings
 from django.apps import apps
@@ -44,30 +44,6 @@ def TrendingAuthorsView(request):
     return render(request, 'trending_authors.html', {'authors': queryset, 'filter': q_filter})
 
 
-def SignUpView(request):
-    if request.user.is_authenticated:
-        return redirect('home')
-
-    if request.method == 'GET':
-        form = SignupForm
-        return render(request, 'registration/signup.html', {'form': form})
-
-    else:
-        form = SignupForm(request.POST or None)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.add_message(request, messages.SUCCESS, 'Welcome to Easy Blog!')
-            return redirect('home')
-        else:
-            for e in form.errors:
-                messages.add_message(request, messages.ERROR, e)
-            return render(request, 'registration/signup.html', {'form': form, 'newPost': True})
-
-
 class PostDetailView(HitCountDetailView):
     model = Post
     template_name = 'post_detail.html'
@@ -82,21 +58,6 @@ class PostDetailView(HitCountDetailView):
             messages.error(self.request, 'Invalid Post.')
             return None
         return context
-
-
-def ProfileView(request, username):
-    if request.user.username == username:
-        user = request.user
-        posts = Post.objects.filter(author=user)
-    else:
-        user = get_user_model().objects.get(username=username)
-        posts = Post.objects.filter(author=user, status=1)
-
-    context = {
-        'requested_profile': user,
-        'posts': posts
-    }
-    return render(request, 'profile.html', context=context)
 
 
 def NewPostView(request):
@@ -190,30 +151,6 @@ def DeletePostView(request, slug):
     return render(request, 'index.html')
 
 
-@login_required
-def EditProfileView(request, username):
-    instance = get_object_or_404(get_user_model(), username=username)
-
-    if instance.username != request.user.username:
-        return redirect('profile_page', username=username)
-
-    userForm = UserForm(request.POST or None, instance=instance)
-    profileForm = ProfileForm(request.POST or None, instance=instance.profile)
-    if request.method == 'POST':
-        profileForm = ProfileForm(request.POST or None, request.FILES, instance=instance.profile)
-
-    if userForm.is_valid() and profileForm.is_valid():
-        userForm.save()
-        profileForm.save()
-        messages.add_message(request, messages.SUCCESS, 'Profile updated!')
-        return redirect('profile_page', username=username)
-    context = {
-        'userForm': userForm,
-        'profileForm': profileForm
-    }
-    return render(request, 'edit_profile.html', context=context)
-
-
 class SearchView(generic.View):
     def get(self, request):
         search_type = request.GET.get('type') or None
@@ -293,21 +230,3 @@ def ReportPostView(request, slug):
             return redirect('post_detail', slug=slug)
 
         return render(request, 'report.html', context={'form': postReportForm})
-
-
-def ReportUserView(request, username):
-    user = get_object_or_404(get_user_model(), username=username)
-    if user:
-        userReportForm = ReportForm(request.POST or None)
-
-        if userReportForm.is_valid():
-            new_report = userReportForm.save(commit=False)
-            new_report.user = user
-            if request.user:
-                new_report.reporter = request.user
-            new_report.save()
-
-            messages.add_message(request, messages.SUCCESS, 'User Reported')
-            return redirect('profile_page', username=username)
-
-        return render(request, 'report.html', context={'form': userReportForm})

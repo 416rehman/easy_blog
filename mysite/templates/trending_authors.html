@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 {% block homepage %}
     <div id="filter_controls">
-        <button class="flat" onclick="location.href=`{% url 'home' %}`">Articles</button>
+        <button class="flat" onclick="location.href=`{% url 'home' %}`">Posts</button>
         <button class="flat active">Authors</button>
         <form method="get">
             <select name="filter" id="filter" onchange="this.form.submit()">

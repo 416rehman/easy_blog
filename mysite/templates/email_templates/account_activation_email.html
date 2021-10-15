@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>Verify Your Email</title>
+    <meta name="viewport" content="width = 375, initial-scale = -1">
+  </head>
+
+  <body style="background-color: #ffffff; font-size: 16px;">
+    <div style="text-align: center;">
+      <table align="center" border="0" cellpadding="0" cellspacing="0" style="height:100%; width:600px;">
+          <!-- BEGIN EMAIL -->
+          <tr>
+            <td align="center" bgcolor="#ffffff" style="padding:30px">
+                <p style="text-align:left">Hello {{user.username}},<br><br> Welcome to <a href="{{ default_domain }}">Easy Blog</a>, Before we get started, we just need to confirm that this is you. Click below to verify your email address:</p>
+              <p>
+                {% autoescape off %}
+                <a target="_blank" style="text-decoration:none; background-color: black; border: #262626 1px solid; color: #fff; padding:10px 10px; display:block;" href="{{ default_domain }}{% url 'verify_email' uidb64=uid token=token %}">
+                  <strong>Verify Email</strong>
+                </a>
+                {% endautoescape %}
+              </p>
+            </td>
+          </tr>
+      </table>
+    </div>
+  </body>
+</html>

@@ -1,14 +1,15 @@
 // fade out message alerts
 function fade_alerts() {
-    alerts = document.getElementsByClassName("alert msg");
+    let alerts = document.getElementsByClassName("alert msg");
         var i = alerts.length;
-        for (let elem of alerts) {
-            i--;
-            time = 3250+(1000*i);
-            setTimeout(function() {
-                elem.parentElement.removeChild(elem);
-            }, time);
-        }
+    let time;
+    for (let elem of alerts) {
+        i--;
+        time = 5000 + (1000 * i);
+        setTimeout(function () {
+            elem.parentElement.removeChild(elem);
+        }, time);
+    }
 }
 
 // call fade out after DOMContentLoaded

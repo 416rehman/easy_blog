@@ -39,3 +39,9 @@
     border-color: #ebcccc;
     color:  var(--success);
 }
+
+.alert-info {
+    background-color: var(--text-color-dim);
+    border-color: #ffffff;
+    color: var(--primary-color);
+}

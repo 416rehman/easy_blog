@@ -84,11 +84,10 @@ div#author_block {
     font-family: 'Merriweather', serif;
     font-size:calc(13px + 0.2vw);
     font-weight: 400;
-    padding-bottom: 75px;
     letter-spacing: 0.003em;
     word-spacing: 0.05em;
     line-height: 32px;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 #toolbar {
@@ -105,4 +104,8 @@ div#author_block {
 }
 #delete_btn {
     color: var(--error);
+}
+
+div#more * {
+    font-family: 'Merriweather Sans', sans-serif;
 }

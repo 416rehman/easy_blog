@@ -3,15 +3,21 @@
 {% block content %}
 <div id="profile" class="center">
     <div class="about">
-        {% if requested_profile.profile.avatar %}
-        <img src="/media/{{requested_profile.profile.avatar}}"
-             alt="{{requested_profile.username}}'s avatar">
-        {% else %}
-        <img src="/media/images/profile/default.jpg"
-             alt="{{requested_profile.username}}'s avatar">
-        {% endif %}
+        <div id="profile-media">
+            <img id="banner"  src="/media/images/profile/default.jpg"
+                 alt="{{requested_profile.username}}'s banner">
+            {% if requested_profile.profile.avatar %}
+            <img id="avatar" src="/media/{{requested_profile.profile.avatar}}"
+                 alt="{{requested_profile.username}}'s avatar">
+            {% else %}
+            <img id="avatar"  src="/media/images/profile/default.jpg"
+                 alt="{{requested_profile.username}}'s avatar">
+            {% endif %}
+        <a href="edit"><button class="flat mini">Edit Profile</button></a>
+        </div>
+
         {% if user == requested_profile %}
-        <a href="edit"><small><em>Edit</em></small></a>
+
         {% endif %}
         <h1>{{requested_profile.first_name}} {{requested_profile.last_name}}</h1>
         <span>@{{requested_profile.username}}</span>

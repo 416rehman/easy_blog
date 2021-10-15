@@ -17,6 +17,8 @@ load_dotenv()
 import os.path
 from pathlib import Path
 
+DEFAULT_DOMAIN = 'https://blog.ahmadz.ai'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIRS = os.path.join(BASE_DIR, 'templates')
@@ -65,6 +67,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'blog.middleware.RestrictInactiveUsersMiddleware',
     # 'csp.middleware.CSPMiddleware',
 ]
 
@@ -110,6 +113,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blog.context_processors.default_domain'
             ],
         },
     },
@@ -204,7 +208,7 @@ TINYMCE_DEFAULT_CONFIG = {
     # 'paste_word_valid_elements': 'b,strong,i,em,h1,h2,h3',
     'paste_data_images': True,
     'image_caption': True,
-    "toolbar": 'fullscreen',
+    "toolbar": False,
     "height": 500,
     "placeholder": "Tell your story...",
     "content_style": "@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap'); body { "
@@ -226,13 +230,22 @@ TINYMCE_DEFAULT_CONFIG = {
                      "line-height: 32px;"
                      "}"
                      "body {"
-                     "padding: 0 5px;"
+                     "margin: 0;"
                      "background-color: var(--primary-color);"
                      "}"
                      "iframe {"
                      "width:100%;"
                      "}"
-                     ".mce-content-body:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before { color: #757575;}",
+                     ".mce-content-body:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before { color: #757575;}"
+                     "iframe.pdf-iframe {"
+                     "overflow: auto;"
+                     "resize: vertical;"
+                     "height: 800px;"
+                     "width: 100%;"
+                     "border-radius: 5px;"
+                     "border-style: solid;"
+                     "border-color: var(--button-border);"
+                     "}",
     "branding": False,
     "statusbar": False,
     "body_class": 'dark',

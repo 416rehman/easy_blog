@@ -4,21 +4,16 @@
 <div id="profile" class="center">
     <div class="about">
         <div id="profile-media">
-            <img id="banner"  src="/media/images/profile/default.jpg"
+            <img id="banner"  src="{{ aws_media_url }}{{requested_profile.profile.banner}}"
                  alt="{{requested_profile.username}}'s banner">
-            {% if requested_profile.profile.avatar %}
-            <img id="avatar" src="/media/{{requested_profile.profile.avatar}}"
+            <img id="avatar" src="{{ aws_media_url }}{{requested_profile.profile.avatar}}"
                  alt="{{requested_profile.username}}'s avatar">
-            {% else %}
-            <img id="avatar"  src="/media/images/profile/default.jpg"
-                 alt="{{requested_profile.username}}'s avatar">
+            {% if user == requested_profile %}
+                <a href="edit"><button class="flat mini">Edit Profile</button></a>
             {% endif %}
-        <a href="edit"><button class="flat mini">Edit Profile</button></a>
         </div>
 
-        {% if user == requested_profile %}
 
-        {% endif %}
         <h1>{{requested_profile.first_name}} {{requested_profile.last_name}}</h1>
         <span>@{{requested_profile.username}}</span>
         <p style="text-align: center">{{requested_profile.profile.bio}}</p>

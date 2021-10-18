@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'hitcount',
     'django_cleanup.apps.CleanupConfig',
     'django_elasticsearch_dsl',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -68,7 +69,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'blog.middleware.RestrictInactiveUsersMiddleware',
-    # 'csp.middleware.CSPMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 # SameSite cookies
@@ -78,27 +79,32 @@ CSRF_COOKIE_SAMESITE = None
 SESSION_COOKIE_SAMESITE = None
 
 # django-csp
-# CSP_UPGRADE_INSECURE_REQUESTS = not DEBUG
-# CSP_BASE_URI = ["'self'"]
-# CSP_DEFAULT_SRC = ("'self'",)
-# CSP_SCRIPT_SRC = [
-#     "'self'",
-#     "'strict-dynamic'",
-#     "'unsafe-inline'",
-#     "https://cdnjs.cloudflare.com",
-#     "https://fonts.googleapis.com",
-#     "https://unpkg.com"
-# ]
-# CSP_STYLE_SRC = ["'self'",
-#                  "'unsafe-inline'",
-#                  "cdnjs.cloudflare.com",
-#                  "https://fonts.googleapis.com"]
-# CSP_FONT_SRC = ['https://fonts.gstatic.com']
-# CSP_CONNECT_SRC = ['https://unpkg.com/']
-# CSP_INCLUDE_NONCE_IN = ['script-src']
-# CSP_OBJECT_SRC = ["'none'"]
+CSP_UPGRADE_INSECURE_REQUESTS = not DEBUG
+CSP_BASE_URI = ["'self'"]
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_IMG_SRC = ["'self'", "https: data:", "blob:"]
+CSP_FRAME_SRC = ["'self'", "https:", "data:"]
+CSP_SCRIPT_SRC = [
+    "'self'",
+    "'unsafe-inline'",
+    "'unsafe-eval'",
+    "gist.github.com",
+    "https://cdnjs.cloudflare.com",
+    "https://fonts.googleapis.com",
+    "https://unpkg.com",
+    "http://127.0.0.1:8000/"
+]
+CSP_STYLE_SRC = ["'self'",
+                 "'unsafe-inline'",
+                 "https://github.githubassets.com",
+                 "cdnjs.cloudflare.com",
+                 "https://fonts.googleapis.com"]
+CSP_FONT_SRC = ['https://fonts.gstatic.com']
+CSP_CONNECT_SRC = ['https://unpkg.com/']
+CSP_INCLUDE_NONCE_IN = ['script-src']
+CSP_OBJECT_SRC = ["'none'"]
 # CSP_REPORT_URI = ["http://localhost:8000/fake-report-uri/"]
-# CSP_REPORT_ONLY = False  # enforcement mode
+CSP_REPORT_ONLY = False  # enforcement mode
 
 ROOT_URLCONF = 'mysite.urls'
 
@@ -113,7 +119,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'blog.context_processors.default_domain'
+                'blog.context_processors.default_domain',
+                'blog.context_processors.aws_media_url'
             ],
         },
     },
@@ -294,7 +301,7 @@ TINYMCE_DEFAULT_CONFIG = {
                          "}",
 }
 
-LOGIN_URL = '/login'
+LOGIN_URL = '/auth/login'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
@@ -314,3 +321,12 @@ ELASTICSEARCH_DSL = {
 }
 
 AUTH_USER_MODEL = 'users.User'
+
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_PUBLIC_MEDIA_LOCATION = 'media'
+
+DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'

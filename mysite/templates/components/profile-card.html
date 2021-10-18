@@ -1,0 +1,12 @@
+<div class="profile_card">
+    <a href="{% url 'profile_page' username %}">
+        <img src="{{avatar}}" alt="{{username}}'s avatar">
+        <div id="about">
+            <span id="name">{{first_name | title}} {{last_name | title}}</span>
+            <span id="username">@{{username}}</span>
+            <hr>
+            <p id="bio">{{bio}}</p>
+        </div>
+    </a>
+    <img id="profile-card-banner" src="{{ banner }}" alt="{{ username }}'s banner">
+</div>

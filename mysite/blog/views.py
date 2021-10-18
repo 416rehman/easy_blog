@@ -79,11 +79,14 @@ def CreatePostView(request):
         return redirect("%s?next=%s" % (settings.LOGIN_URL, reverse('create_post')))
 
     if request.method == 'GET':
+        form = None
         if 'form_data' in request.session:
             data = json.loads(request.session['form_data'])
             del request.session['form_data']
             form = PostForm(data or None)
             return render(request, 'edit_post.html', {'form': form, 'newPost': True})
+        else:
+            return redirect('new_post')
     else:
         form = PostForm(request.POST or None)
         if form.is_valid():
@@ -214,8 +217,11 @@ class SearchView(generic.View):
                        'posts_only': not user_qs})
 
 
+@login_required
 def ReportPostView(request, slug):
     post = get_object_or_404(Post, slug=slug)
+    if post.author == request.user:
+        return redirect('post_detail', slug=slug)
     if post:
         postReportForm = ReportForm(request.POST or None)
 

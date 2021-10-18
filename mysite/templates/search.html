@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load hitcount_tags %}
-
+{% load template_tags %}
 {% block content %}
 <div class="center side_by_side">
     {% if results %}
@@ -56,16 +56,7 @@
             <div id="results">
                 {% for r in results %}
                     {% if r.user %}
-                        <div>
-                            <a href="{% url 'profile_page' r.user %}" class="profile_card">
-                                <img src="/media/{{r.avatar}}" alt="{{r.user}}'s avatar">
-                                <div id="about">
-                                    <span id="name">{{r.user.first_name | title}} {{r.user.last_name | title}}</span>
-                                    <span id="username">@{{r.user}}</span>
-                                    <p id="bio">{{r.bio}}</p>
-                                </div>
-                            </a>
-                        </div>
+                        {% profile_card r.user.username r.user.first_name r.user.last_name r.bio %}
                     {% else %}
                         <div class="postcard" onclick="location.href=`{% url 'post_detail' r.slug  %}`;">
                             <div class="postcard-infobar">

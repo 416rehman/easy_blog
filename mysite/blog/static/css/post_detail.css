@@ -99,11 +99,18 @@ div#author_block {
     right: 15px;
     height: 65px;
 }
+
 #toolbar * {
     font-family: 'Merriweather Sans', sans-serif;
 }
+
 #delete_btn {
     color: var(--error);
+}
+
+#publish_btn {
+    color: var(--success);
+    background-color: var(--success-bg);
 }
 
 div#more * {

@@ -12,6 +12,7 @@ from django.utils.html import strip_tags
 from django.utils.text import slugify
 from hitcount.models import HitCount
 from tinymce.models import HTMLField
+from django.core.exceptions import ValidationError
 
 STATUS = (
     (0, "Draft"),
@@ -57,11 +58,27 @@ class Post(models.Model):
         super().save(*args, **kwargs)
 
 
+def get_avatar_path(instance, filename):
+    return 'avatars/{0}.png'.format(instance.user.username)
+
+
+def get_banner_path(instance, filename):
+    return 'banners/{0}.png'.format(instance.user.username)
+
+
+def validate_file_size(value):
+    filesize = value.size
+
+    if filesize > 10485760:
+        raise ValidationError("The maximum image size is 10MB.")
+    else:
+        return value
+
 class Profile(models.Model):  # add this class and the following fields
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(max_length=250, null=True, blank=True)
-    avatar = models.ImageField(null=True, blank=True, upload_to="images/profile/", default="images/profile"
-                                                                                           "/default.jpg")
+    avatar = models.ImageField(null=True, blank=True, upload_to=get_avatar_path, default='avatars/default.png', validators=[validate_file_size])
+    banner = models.ImageField(null=True, blank=True, upload_to=get_banner_path, default='avatars/default.png', validators=[validate_file_size])
     github = models.URLField(max_length=200, null=True, blank=True)
     linkedin = models.URLField(max_length=200, null=True, blank=True)
     website = models.URLField(max_length=200, null=True, blank=True)

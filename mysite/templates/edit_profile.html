@@ -12,12 +12,21 @@
     <div class="form-group">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-                <div id="avatarContainer">
-                    <img id="avatar" src="/media/{{profileForm.avatar.value}}" alt="Avatar of {{userForm.username.value}}">
-                    {{profileForm.avatar}}
+                <div id="mediaContainer">
+                    <div>
+                        <div id="banner_container">
+                            <img id="banner" src="{{ aws_media_url }}{{ profileForm.banner.value }}" alt="Banner of {{userForm.username.value}}">
+                            <label id="banner_lbl" for="id_banner">Change Banner</label> {{profileForm.banner}}
+                        </div>
+                        <div id="avatar_container">
+                            <img id="avatar" src="{{ aws_media_url }}{{ profileForm.avatar.value }}" alt="Avatar of {{userForm.username.value}}">
+                            <label for="id_avatar">Change Avatar</label> {{profileForm.avatar}}
+                        </div>
+                    </div>
                 </div>
                 <hr>
             <br>
+            {{profileForm.banner}}
             <div id="userDataContainer">
                 <label for="id_username">Username</label> {{userForm.username}}<br>
                 <label for="id_first_name">First Name </label> {{userForm.first_name}}<br>

@@ -33,7 +33,7 @@
             <a href="{% url 'new_post' %}">Write</a>
             <a href="javascript:void(0);" id="dropdown_btn" onclick="toggle('navlinksContainer', 'flex')">
                 {% if user.is_authenticated %}
-                    <img class="avatar_icon" src="/media/{{user.profile.avatar}}" alt="">
+                    <img class="avatar_icon" src="{{aws_media_url}}{{user.profile.avatar}}" alt="">
                 {%else %}
                     <ion-icon name="menu-outline"></ion-icon>
                 {% endif %}

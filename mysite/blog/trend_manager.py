@@ -21,7 +21,7 @@ class TrendManager:
                     'author').annotate(total_views=Sum('hourly_views'))
                 print(f'Trending Authors: {bool(self.trending_authors)}')
 
-        print(f'Trending Articles: {bool(self.trending_posts)}')
+        print(f'Trending Posts: {bool(self.trending_posts)}')
 
         self.upcoming_posts = Post.objects.filter(status=1)
         for post in self.upcoming_posts:

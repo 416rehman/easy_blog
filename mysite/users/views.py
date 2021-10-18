@@ -35,8 +35,11 @@ class ActivateAccountView(View):
             return redirect('home')
 
 
+@login_required
 def ReportUserView(request, username):
     user = get_object_or_404(get_user_model(), username=username)
+    if user.username == request.user.username:
+        return redirect('profile_page', username=username)
     if user:
         userReportForm = ReportForm(request.POST or None)
 

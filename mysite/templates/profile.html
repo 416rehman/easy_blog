@@ -1,60 +1,60 @@
 {% extends "base.html" %}
-
+{% load template_tags %}
 {% block content %}
 <div id="profile" class="center">
-    <div class="about">
-        <div id="profile-media">
-            <img id="banner"  src="{{ aws_media_url }}{{requested_profile.profile.banner}}"
-                 alt="{{requested_profile.username}}'s banner">
-            <img id="avatar" src="{{ aws_media_url }}{{requested_profile.profile.avatar}}"
-                 alt="{{requested_profile.username}}'s avatar">
-            {% if user == requested_profile %}
-                <a href="edit"><button class="flat mini">Edit Profile</button></a>
-            {% endif %}
-        </div>
-
-
-        <h1>{{requested_profile.first_name}} {{requested_profile.last_name}}</h1>
-        <span>@{{requested_profile.username}}</span>
-        <p style="text-align: center">{{requested_profile.profile.bio}}</p>
-        <div id="socials">
-            {% if requested_profile.profile.website %}
-            <a href="{{requested_profile.profile.website}}/">Website</a>
-            {% endif %}
-            •
-            {% if requested_profile.profile.linkedin %}
-            <a href="{{requested_profile.profile.linkedin}}">LinkedIn</a>
-            {% endif %}
-            •
-            {% if requested_profile.profile.github %}
-            <a href="{{requested_profile.profile.github}}">Github</a>
-            {% endif %}
-        </div>
-        <div id="postsContainer">
-            {% for post in posts %}
-            {% if post.slug %}
-
-            <div class="postcard">
-                <a href="{% url 'post_detail' post.slug  %}">
-                    <div class="postcard-infobar">
-                        <p id="postAuthor">@{{ post.author }}</p>
-                        {% if post.status == 0 %}
-                        <div class="postcard-tag alert-error">Unpublished</div>
+    <div id="profile-container">
+        <img id="banner"  src="{{ aws_media_url }}{{requested_profile.profile.banner}}"
+             alt="{{requested_profile.username}}'s banner">
+        <div id="about">
+            <div id="profile-info-top">
+                <img id="avatar" src="{{ aws_media_url }}{{requested_profile.profile.avatar}}"
+                     alt="{{requested_profile.username}}'s avatar">
+                <div id="user-info">
+                    <span id="name">{{requested_profile.first_name}} {{requested_profile.last_name}}</span>
+                    <span id="username">@{{requested_profile.username}}</span>
+                    <div id="socials">
+                    {% if requested_profile.profile.website %}
+                    <a href="{{requested_profile.profile.website}}/">Website</a>
+                    {% endif %}
+                    •
+                    {% if requested_profile.profile.linkedin %}
+                    <a href="{{requested_profile.profile.linkedin}}">LinkedIn</a>
+                    {% endif %}
+                    •
+                    {% if requested_profile.profile.github %}
+                    <a href="{{requested_profile.profile.github}}">Github</a>
+                    {% endif %}
+                </div>
+                    <div id="buttons">
+                    {% if user == requested_profile %}
+                        <a href="edit"><button class="flat mini">Edit Profile <ion-icon name="create-outline"></ion-icon></button></a>
+                    {% else %}
+                        <a href="report"><button class="flat mini">Report <ion-icon name="flag-outline"></ion-icon></button></a>
+                        {% if following %}
+                            <a href="follow"><button class="flat mini">Follow <ion-icon name="add-circle-outline"></ion-icon></button></a>
+                        {% else %}
+                            <a href="follow"><button class="flat mini">Unfollow <ion-icon name="remove-circle-outline"></ion-icon></button></a>
                         {% endif %}
-                    </div>
-                    <h3 id="postTitle">{{post.title | title }}</h3>
-                    <p id="postContent">{{post.excerpt | slice:":200" | title }}</p>
-                    <div id="meta">
-                        <span id="date">{{ post.created_on}}</span>
-                        <span><ion-icon name="eye-outline"></ion-icon> {{post.views}}</span>
-                    </div>
-                </a>
+                    {% endif %}
+                </div>
+                </div>
             </div>
-
-            {% endif %}
-            {% endfor %}
+            <hr style="width: 100%">
+            <div id="profile-info-bottom">
+                <span>{{requested_profile.profile.bio}}</span>
+            </div>
         </div>
     </div>
+    <div id="postsContainer">
+        {% for post in posts %}
+        {% if post.slug %}
+
+        {% post_card post %}
+
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
 
     {% endblock %}
 

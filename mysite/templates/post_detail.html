@@ -41,14 +41,17 @@
                     <img class="avatar_icon" src="{{aws_media_url}}{{post.author.profile.avatar}}" alt="Avatar of {{post.author}}">
                 </a>
                 <div>
-                    <span id="postAuthor"><a href="/@{{post.author.username}}">@{{ post.author }}</a> </span><br>
-                    <span>Created {{ post.created_on }}</span>
+                    <span id="postAuthor">
+                        <a href="/@{{post.author.username}}"> <span id="author-username">@{{ post.author }} </span> </a>
+                        <br>
+                        <span id="reading-time">{{ post.reading_time }} min read</span> <span> · {{post.views}} views</span>
+                    </span>
                 </div>
             </div>
             <div>
-                <div>Views: {{post.views}}</div>
+                <span>{% if post.created_on != post.updated_on %}Created{% endif %} {{ post.created_on  | date:"M d Y"}}</span>
                 {% if post.created_on != post.updated_on %}
-                <span>Updated {{ post.updated_on }}</span>
+                    <br><span>Updated {{ post.updated_on | date:"M d Y"}}</span>
                 {% endif %}
             </div>
         </div>
@@ -69,7 +72,7 @@
         {% endif %}
         <div id="more">
             <h4>More About The Author</h4>
-            {% profile_card post.author.username post.author.first_name post.author.last_name post.author.profile.bio %}
+            {% profile_card post.author.username post.author.first_name post.author.last_name post.author.profile.bio post.author.profile.avatar post.author.profile.banner %}
             <br>
         </div>
     </div>

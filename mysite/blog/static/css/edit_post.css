@@ -1,2 +1,37 @@
+div#images {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+}
 
+#images > div > img {
+    height: 100px;
+    width: 100px;
+    object-fit: contain;
+    border-radius: var(--border-radius);
+    transition: none !important;
+}
+#images > div  {
+    border-radius: var(--border-radius);
+    transition: none !important;
+}
 
+#images > div > img:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+    border: solid 2px cornflowerblue;
+}
+
+#featured_image_selector {
+    display: none;
+}
+#featured_image_selector.active {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    border: 2px solid var(--tertiary-color);
+    padding: 10px;
+    align-items: center;
+}

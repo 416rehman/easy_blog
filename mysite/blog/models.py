@@ -35,6 +35,7 @@ class Post(models.Model):
                                         related_query_name='hit_count_generic_relation')
     hourly_views = models.IntegerField(editable=False, default=0)
     last_views_snapshot = models.IntegerField(editable=False, default=0)
+    featured_image = models.TextField(blank=True, null=True, default='')
 
     class Meta:
         ordering = ['-created_on']
@@ -49,6 +50,10 @@ class Post(models.Model):
     @property
     def tags(self):
         return [tag.strip() for tag in self.taglist.split(',')] if self.taglist else []
+
+    @property
+    def reading_time(self):
+        return max([1, int(len(self.raw_content.split(' ')) / 275)])
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -74,11 +79,14 @@ def validate_file_size(value):
     else:
         return value
 
+
 class Profile(models.Model):  # add this class and the following fields
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(max_length=250, null=True, blank=True)
-    avatar = models.ImageField(null=True, blank=True, upload_to=get_avatar_path, default='avatars/default.png', validators=[validate_file_size])
-    banner = models.ImageField(null=True, blank=True, upload_to=get_banner_path, default='avatars/default.png', validators=[validate_file_size])
+    avatar = models.ImageField(null=True, blank=True, upload_to=get_avatar_path, default='avatars/default.png',
+                               validators=[validate_file_size])
+    banner = models.ImageField(null=True, blank=True, upload_to=get_banner_path, default='avatars/default.png',
+                               validators=[validate_file_size])
     github = models.URLField(max_length=200, null=True, blank=True)
     linkedin = models.URLField(max_length=200, null=True, blank=True)
     website = models.URLField(max_length=200, null=True, blank=True)

@@ -1,6 +1,9 @@
 # Create your models here.
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.html import strip_tags
@@ -34,3 +37,17 @@ class User(AbstractUser):
         to_email = self.email
         send_mail(mail_subject, strip_tags(message), 'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>', [to_email],
                   html_message=message)
+
+
+class Followers(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    following_user = models.ManyToManyField(User, related_name='following_user', null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+@receiver(post_save, sender=get_user_model())  # add this
+def create_followers(sender, instance, created, **kwargs):
+    if created:
+        Followers.objects.create(user=instance)

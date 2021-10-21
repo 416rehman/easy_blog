@@ -6,17 +6,25 @@
 <div id="articleContainer" class="center">
     <br>
     <div class="articlebody">
-        <form method="post" {% if newPost %} action="{% url 'create_post' %}" {% endif %}>
+        <form id="post_form" method="post" {% if newPost %} action="{% url 'create_post' %}" {% endif %}>
             {% csrf_token %}
             <div id="postInfo">
                 {{form.status}}
+                <button class="flat mini" type="button" onclick="featured_image_handler(this)">Featured Image</button>
                 <span><label for="id_tags">Tags </label>{{form.taglist}}</span>
+            </div>
+            <div id="featured_image_selector">
+                <span>Newly added images will be selectable after the post is saved.</span>
+                <div id="images">
+
+                </div>
             </div>
             <br>
             {{form.title}}
             {{form.excerpt}}
             <hr>
             {{form.content}}
+            {{ form.featured_image.as_hidden }}
             <hr>
             {% if form.errors %}
                 {{form.errors}}
@@ -38,4 +46,7 @@
     {{ form.media }}
     <link rel="stylesheet" href="{% static 'css/edit_post.css' %}">
     <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
+{% endblock %}
+{% block scripts %}
+    <script src={% static "js/featured_image.js" %}></script>
 {% endblock %}

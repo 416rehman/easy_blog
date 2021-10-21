@@ -11,7 +11,8 @@ from django.views.generic import UpdateView
 
 from blog.forms import ReportForm
 from blog.models import Post
-from users.forms import UserForm, ProfileForm, SignupForm, EmailVerificationForm
+from users.forms import UserForm, ProfileForm, SignupForm
+from users.models import Followers
 from users.tokens import account_activation_token
 
 
@@ -86,17 +87,25 @@ def EditProfileView(request, username):
 
 
 def ProfileView(request, username):
+    following = False
+    followers = None
     if request.user.username == username:
         user = request.user
         posts = Post.objects.filter(author=user)
     else:
         user = get_user_model().objects.get(username=username)
         posts = Post.objects.filter(author=user, status=1)
+        if request.user.is_authenticated:
+            session_user = get_user_model().objects.get(username=request.user.username)
+            followers = Followers.objects.get(user=session_user)
+            following = followers.following_user.filter(username=user.username).exists()
 
     context = {
         'requested_profile': user,
-        'posts': posts
+        'posts': posts,
+        'following': following
     }
+
     return render(request, 'profile.html', context=context)
 
 
@@ -137,11 +146,30 @@ class InactiveUserView(UpdateView):
         return get_user_model().objects.get(pk=self.request.user.pk)
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_email_verified:
-            return redirect('home')
+        if request.user.is_authenticated:
+            if request.user.is_email_verified:
+                return redirect('home')
+            else:
+                return super().get(request, *args, **kwargs)
         else:
-            return super().get(request, *args, **kwargs)
+            return redirect('home')
 
     def post(self, request, *args, **kwargs):
         messages.add_message(request, messages.SUCCESS, 'An email has been sent. Please check your email.')
         return super().get(request, *args, **kwargs)
+
+
+@login_required()
+def FollowUserView(request, username):
+    session_user = get_user_model().objects.get(username=request.user.username)
+    other_user = get_user_model().objects.get(username=username)
+
+    if session_user.username != other_user.username:
+        followers_user = Followers.objects.get(user=session_user.id)
+        if followers_user.following_user.filter(username=other_user.username).exists():
+            followers_user.following_user.remove(other_user)
+            messages.add_message(request, messages.ERROR, 'Unfollowed {0}'.format(other_user.username))
+        else:
+            followers_user.following_user.add(other_user)
+            messages.add_message(request, messages.SUCCESS, 'Followed {0}'.format(other_user.username))
+    return redirect('profile_page', username=other_user.username)

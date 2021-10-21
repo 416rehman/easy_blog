@@ -1,4 +1,5 @@
 {% extends "index.html" %}
+{% load template_tags %}
 {% block homepage %}
     <div id="filter_controls">
         <button class="flat active">Posts</button>
@@ -16,19 +17,7 @@
         {% endif %}
         {% for post in posts %}
             {% if post.status == 1 %}
-                <div class="postcard">
-                    <a href="{% url 'post_detail' post.slug  %}">
-                        <div class="postcard-infobar">
-                            <p id="postAuthor">@{{ post.author }}</p>
-                        </div>
-                        <h3 id="postTitle">{{post.title | title }}</h3>
-                        <p id="postContent">{{post.excerpt | slice:":200" | title }}</p>
-                        <div id="meta">
-                            <span id="date">{{ post.created_on}}</span>
-                            <span><ion-icon name="eye-outline"></ion-icon> {{post.views}}</span>
-                        </div>
-                    </a>
-                </div>
+                {% post_card post %}
             {% endif %}
         {% endfor %}
     </div>

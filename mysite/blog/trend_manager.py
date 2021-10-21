@@ -17,7 +17,7 @@ class TrendManager:
             if self.trending_posts:
                 self.trending_authors = self.trending_posts.values('author', 'author__username', 'author__first_name',
                                                                    'author__last_name', 'author__profile__bio',
-                                                                   'author__profile__avatar').order_by(
+                                                                   'author__profile__avatar', 'author__profile__banner').order_by(
                     'author').annotate(total_views=Sum('hourly_views'))
                 print(f'Trending Authors: {bool(self.trending_authors)}')
 

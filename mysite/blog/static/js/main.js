@@ -15,6 +15,9 @@ function fade_alerts() {
 // call fade out after DOMContentLoaded
 window.addEventListener('DOMContentLoaded', (event) => {
     fade_alerts();
+    const textareas = document.getElementsByTagName("textarea")
+    for (const ta of textareas)
+        auto_grow(ta)
 });
 
 //Resizes textarea vertically
@@ -24,7 +27,15 @@ function auto_grow(element) {
 }
 
 function preventLineBreak(e) {
-    if (e.keyCode == 13) e.preventDefault();
+    if (e.keyCode == 13) {
+        e.preventDefault();
+         let nextInput = document.querySelectorAll('[tabIndex="' + (e.target.tabIndex + 1) + '"]');
+         if (nextInput.length === 0) {
+            nextInput = document.querySelectorAll('[tabIndex="1"]');
+         }
+         console.log(nextInput)
+         nextInput[0].focus();
+    }
 }
 
 function addStylesToEditorFrame() {

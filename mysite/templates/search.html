@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load hitcount_tags %}
 {% load template_tags %}
 {% block content %}
 <div class="center side_by_side">
@@ -55,23 +54,10 @@
             </div>
             <div id="results">
                 {% for r in results %}
-                    {% if r.user %}
-                        {% profile_card r.user.username r.user.first_name r.user.last_name r.bio %}
+                    {% if r.avatar is not None %}
+                        {% profile_card r.user.username r.user.first_name r.user.last_name r.bio r.avatar r.banner %}
                     {% else %}
-                        <div class="postcard" onclick="location.href=`{% url 'post_detail' r.slug  %}`;">
-                            <div class="postcard-infobar">
-                              <p id="postAuthor">@{{ r.author }}</p>
-                              {% if r.status == 0 %}
-                                <div class="postcard-tag alert-error">Unpublished</div>
-                              {% endif %}
-                            </div>
-                            <h3 id="postTitle">{{r.title | title }}</h3>
-                            <p id="postContent">{{r.excerpt | slice:":200" | title }}</p>
-                            <div id="meta">
-                                <span id="date">{{ r.created_on}}</span>
-                                <span><ion-icon name="eye-outline"></ion-icon> {% get_hit_count for r %}</span>
-                            </div>
-                        </div>
+                        {% post_card r %}
                     {% endif %}
                 {% endfor %}
             </div>

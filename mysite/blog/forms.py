@@ -12,15 +12,15 @@ from .models import Post, Report
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'excerpt', 'content', 'taglist', 'status')
+        fields = ('title', 'excerpt', 'content', 'taglist', 'status', 'featured_image')
         widgets = {
-            'excerpt': Textarea(attrs={'aria-label': 'excerpt', 'cols': 20, 'rows': 2, 'oninput': "auto_grow(this)",
-                                       'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Excerpt'}),
-            'title': TextInput(
-                attrs={'aria-label': 'title', 'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Title'}),
-            'content': TinyMCE(attrs={'aria-label': 'content'}),
+            'excerpt': Textarea(attrs={'aria-label': 'excerpt', 'cols': 20, 'rows': 3, 'oninput': "auto_grow(this)", "onload": "auto_grow(this)",
+                                       'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Excerpt', "tabindex": "2"}),
+            'title':  Textarea(attrs={'aria-label': 'title', 'cols': 20, 'rows': 4, 'oninput': "auto_grow(this)", "onload": "auto_grow(this)",
+                                       'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Title', "tabindex": "1"}),
+            'content': TinyMCE(attrs={'aria-label': 'content', "tabindex": "3"}),
             'taglist': TagWidget(attrs={'aria-label': 'tags', 'placeholder': 'Comma-seperated Tags'}),
-            'status': Select(attrs={'aria-label': 'status', 'placeholder': 'Status'})
+            'status': Select(attrs={'aria-label': 'status', 'placeholder': 'Status'}),
         }
 
 

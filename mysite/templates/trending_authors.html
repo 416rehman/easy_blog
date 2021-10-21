@@ -17,9 +17,9 @@
         {% endif %}
         {% for author in authors %}
             {% if filter == 'trending' %}
-                {% profile_card author.author__username author.author__first_name author.author__last_name author.author__profile__bio %}
+                {% profile_card author.author__username author.author__first_name author.author__last_name author.author__profile__bio author.author__profile__avatar author.author__profile__banner %}
             {% else %}
-                {% profile_card author.username author.first_name author.last_name author.profile.bio %}
+                {% profile_card author.username author.first_name author.last_name author.profile.bio author.profile.avatar author.profile.banner %}
             {% endif %}
 
         {% endfor %}

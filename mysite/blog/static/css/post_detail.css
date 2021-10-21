@@ -39,21 +39,23 @@
 
 .articlebody #postExcerpt, .articlebody #id_excerpt  {
     font-family: 'Merriweather', serif;
-    font-size: 21px;
-    font-weight: 400;
+    font-size: min(3vw, 21px);
     border: 0;
     background-color: unset;
     resize: none;
     width: 100%;
+    font-weight: 100;
 }
 
 .articlebody #postTitle, .articlebody #id_title {
-    font-size: 48px;
+    font-size: min(5vw, 36px);
     margin-bottom: 0;
     margin-top: 10px;
     border: 0;
     background-color: unset;
+    resize: none;
     width: 100%;
+    font-weight: 400;
 }
 
 .articlebody #postAuthor { margin-bottom: 0; font-family: 'Merriweather Sans', sans-serif;}
@@ -65,7 +67,7 @@
 .articlebody #meta * {
     color: var(--text-color-dim);
     font-family: 'Merriweather Sans', sans-serif;
-    font-weight: 400;
+    font-weight: 100;
     font-size: 14px;
 }
 
@@ -77,7 +79,13 @@ div#author_block {
 
 #meta #postAuthor, #meta #postAuthor * {
     font-size: unset !important;
-    font-weight: 500;
+    text-decoration: none;
+    font-weight: 100;
+}
+
+#postAuthor #author-username {
+    text-decoration: underline;
+    font-weight: bolder;
 }
 
 .articlebody #postContent {

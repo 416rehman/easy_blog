@@ -11,8 +11,9 @@
     --success: #c4d2c4;
     --success-bg: #232f1e;
     --active_btn: rgb(61, 88, 124);
-    --border-radius: 0px;
+    --border-radius: 5px;
     --profile-card-bg: linear-gradient(to right, rgba(19, 19, 19, 0.95) 45%, rgba(19, 19, 19, 0.5) 100%);
+    --transparent-primary-color: rgba(19, 19, 19, 0.8);
 }
 .dark img, .dark iframe:not(#id_content_ifr) {
     filter: brightness(90%);
@@ -31,6 +32,7 @@
     --success: #1a4e1b;
     --success-bg: #def2de;
     --active_btn: rgb(99 133 179);
-    --border-radius: 0px;
+    --border-radius: 5px;
     --profile-card-bg: linear-gradient(to right, rgba(249, 249, 249,0.95) 45%, rgba(249, 249, 249, 0.5) 100%);
+    --transparent-primary-color: rgba(249, 249, 249, 0.6);
 }

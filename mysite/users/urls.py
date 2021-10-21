@@ -8,4 +8,5 @@ urlpatterns = [
     path('@<str:username>/', views.ProfileView, name="profile_page"),
     path('@<str:username>/edit', views.EditProfileView, name="edit_profile"),
     path('@<str:username>/report', views.ReportUserView, name="report_user"),
+    path('@<str:username>/follow', views.FollowUserView, name="follow_user"),
 ]

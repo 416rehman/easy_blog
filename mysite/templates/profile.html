@@ -1,64 +1,90 @@
 {% extends "base.html" %}
 {% load template_tags %}
 {% block content %}
-<div id="profile" class="center">
-    <div id="profile-container">
-        <img id="banner"  src="{{ aws_media_url }}{{requested_profile.profile.banner}}"
-             alt="{{requested_profile.username}}'s banner">
-        <div id="about">
-            <div id="profile-info-top">
-                <img id="avatar" src="{{ aws_media_url }}{{requested_profile.profile.avatar}}"
-                     alt="{{requested_profile.username}}'s avatar">
-                <div id="user-info">
-                    <span id="name">{{requested_profile.first_name}} {{requested_profile.last_name}}</span>
-                    <span id="username">@{{requested_profile.username}}</span>
-                    <div id="socials">
-                    {% if requested_profile.profile.website %}
-                    <a href="{{requested_profile.profile.website}}/">Website</a>
-                    {% endif %}
-                    •
-                    {% if requested_profile.profile.linkedin %}
-                    <a href="{{requested_profile.profile.linkedin}}">LinkedIn</a>
-                    {% endif %}
-                    •
-                    {% if requested_profile.profile.github %}
-                    <a href="{{requested_profile.profile.github}}">Github</a>
-                    {% endif %}
+    <div id="profile" class="center">
+        <div id="profile-container">
+            <img id="banner" src="{{ aws_media_url }}{{ requested_profile.profile.banner }}"
+                 alt="{{ requested_profile.username }}'s banner">
+            <div id="about">
+                <div id="profile-info-top">
+                    <img id="avatar" src="{{ aws_media_url }}{{ requested_profile.profile.avatar }}"
+                         alt="{{ requested_profile.username }}'s avatar">
+                    <div id="user-info">
+                        <div id="basic-info-container">
+                            <div id="basic-info">
+                                <span id="name">{{ requested_profile.first_name }} {{ requested_profile.last_name }}</span><br>
+                                <span id="username">
+                                    @{{ requested_profile.username }}
+                                    {% if follows_back %}
+                                        <em><small style="color: var(--text-color-dim);">Follows you</small></em>
+                                    {% endif %}
+                                </span>
+                            </div>
+                            <div>
+                                {% if user == requested_profile %}
+                                    <a href="edit">
+                                        <button class="flat">Edit Profile
+                                            <ion-icon name="create-outline"></ion-icon>
+                                        </button>
+                                    </a>
+                                {% else %}
+                                    <button class="flat"
+                                            onclick="follow(event, '{{ requested_profile.username }}')">
+                                        {% if following %}
+                                            Unfollow
+                                            <ion-icon name="remove-circle-outline"></ion-icon>
+                                        {% else %}
+                                            Follow
+                                            <ion-icon name="add-circle-outline"></ion-icon>
+                                        {% endif %}
+                                    </button>
+                                    <a href="report">
+                                        <button class="flat mini">Report
+                                            <ion-icon name="flag-outline"></ion-icon>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div id="socials">
+                            {% if requested_profile.profile.website %}
+                                <a href="{{ requested_profile.profile.website }}/">Website</a>
+                            {% endif %}
+                            •
+                            {% if requested_profile.profile.linkedin %}
+                                <a href="{{ requested_profile.profile.linkedin }}">LinkedIn</a>
+                            {% endif %}
+                            •
+                            {% if requested_profile.profile.github %}
+                                <a href="{{ requested_profile.profile.github }}">Github</a>
+                            {% endif %}
+                        </div>
+                        <div id="followers">
+                            <a href="followers"><strong>{{ requested_profile.count_followers }}</strong> Followers</a>
+                            <a href="following"><strong>{{ requested_profile.count_following }}</strong> Following</a>
+                        </div>
+                    </div>
                 </div>
-                    <div id="buttons">
-                    {% if user == requested_profile %}
-                        <a href="edit"><button class="flat mini">Edit Profile <ion-icon name="create-outline"></ion-icon></button></a>
-                    {% else %}
-                        <a href="report"><button class="flat mini">Report <ion-icon name="flag-outline"></ion-icon></button></a>
-                        {% if following %}
-                            <a href="follow"><button class="flat mini">Follow <ion-icon name="add-circle-outline"></ion-icon></button></a>
-                        {% else %}
-                            <a href="follow"><button class="flat mini">Unfollow <ion-icon name="remove-circle-outline"></ion-icon></button></a>
-                        {% endif %}
-                    {% endif %}
+                <hr style="width: 100%">
+                <div id="profile-info-bottom">
+                    <span>{{ requested_profile.profile.bio }}</span>
                 </div>
-                </div>
-            </div>
-            <hr style="width: 100%">
-            <div id="profile-info-bottom">
-                <span>{{requested_profile.profile.bio}}</span>
             </div>
         </div>
+        <div id="postsContainer">
+            {% for post in posts %}
+                {% if post.slug %}
+
+                    {% post_card post %}
+
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
-    <div id="postsContainer">
-        {% for post in posts %}
-        {% if post.slug %}
 
-        {% post_card post %}
+{% endblock %}
 
-        {% endif %}
-        {% endfor %}
-    </div>
-</div>
-
-    {% endblock %}
-
-    {% load static %}
-    {% block styles %}
+{% load static %}
+{% block styles %}
     <link rel="stylesheet" href="{% static 'css/user.css' %}">
-    {% endblock %}
+{% endblock %}

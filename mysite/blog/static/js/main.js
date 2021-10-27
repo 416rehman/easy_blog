@@ -96,4 +96,14 @@ function toggle(elementId, displayMode, minWidth ) {
     }
 }
 
+function generateMessage(message, type='success') {
+    const li = document.createElement('li')
+    const div = document.createElement('div')
+    div.className = `alert alert-${type} msg fade show`
+    div.role="alert"
+    div.innerText = message || "";
+    li.appendChild(div)
+    const messages = document.getElementById('messages-list')
+    messages.appendChild(li)
+}
 

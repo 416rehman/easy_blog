@@ -1,72 +1,105 @@
 {% extends "base.html" %}
 {% load template_tags %}
 {% block content %}
-<div class="center side_by_side">
-    {% if results %}
-    <div class="side_bar">
-        <button id="filter_btn" style="width: 100%" onclick="toggle('filter_form', 'block', 600)">Filter <ion-icon name="funnel-outline"></ion-icon></button>
-        <form id="filter_form" action="{% url 'search' %}">
-            <div>Filter</div>
-            <hr>
-            {% if not request.GET.scope %}
-            <label for="q">Query</label><br>
-            <input id="q" type="text" name="q" aria-label="query" placeholder="Query" value="{{request.GET.q}}">
-            <br>
-            <br>
-            <label for="type">Type</label><br>
-            <select name="type" id="type">
-                <option value="">All</option>
-                <option value="post" {% if request.GET.type == "post" %}selected{% endif %}>Post</option>
-                <option value="user" {% if request.GET.type == "user" %}selected{% endif %}>User</option>
-            </select>
-            <br>
-            <br>
-            {% else %}
-                <input id="q" type="hidden" name="q" aria-label="query" placeholder="Query" value="{{request.GET.q}}">
-            {% endif %}
-            {% if request.GET.type == "post" or posts_only %}
-                <label for="sort">Sort By</label><br>
-                <select name="sort" id="sort">
-                    <option value="">Popularity</option>
-                    <option value="title" {% if request.GET.sort == "title" %}selected{% endif %}>Title</option>
-                    <option value="date" {% if request.GET.sort == "date" %}selected{% endif %}>Date Created</option>
-                    <option value="author" {% if request.GET.sort == "author" %}selected{% endif %}>Author</option>
-                </select>
-                <br>
-                <br>
-                <label for="order">Order By</label>
-                <select name="order" id="order">
-                    <option value="">Descending</option>
-                    <option value="ascending" {% if request.GET.order == "ascending" %}selected{% endif %}>Ascending</option>
-                </select>
-                <br>
-                <br>
-            <input type="hidden" name="scope" value="{{request.GET.scope}}" >
-            {% endif %}
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-        <div class="search-container">
-            <div id="pages">
-                {% for p in paginator.page_range %}
-                    <a href="{{search_url}}&page={{p}}">{{p}}</a>
-                {% endfor %}
-            </div>
-            <div id="results">
-                {% for r in results %}
-                    {% if r.avatar is not None %}
-                        {% profile_card r.user.username r.user.first_name r.user.last_name r.bio r.avatar r.banner %}
+    <div class="center side_by_side">
+        {% if results %}
+            <div class="side_bar">
+                <button id="filter_btn" style="width: 100%" onclick="toggle('filter_form', 'block', 600)">Filter
+                    <ion-icon name="funnel-outline"></ion-icon>
+                </button>
+                <form id="filter_form" action="{% url 'search' %}">
+                    <div>Filter</div>
+                    <hr>
+                    {% if not request.GET.scope %}
+                        <label for="q">Query</label><br>
+                        <input id="q" type="text" name="q" aria-label="query" placeholder="Query"
+                               value="{{ request.GET.q }}">
+                        <br>
+                        <br>
+                        <label for="type">Type</label><br>
+                        <select name="type" id="type">
+                            <option value="">All</option>
+                            <option value="post" {% if request.GET.type == "post" %}selected{% endif %}>Post</option>
+                            <option value="user" {% if request.GET.type == "user" %}selected{% endif %}>User</option>
+                        </select>
+                        <br>
+                        <br>
                     {% else %}
-                        {% post_card r %}
+                        <input id="q" type="hidden" name="q" aria-label="query" placeholder="Query"
+                               value="{{ request.GET.q }}">
                     {% endif %}
-                {% endfor %}
+                    {% if request.GET.type == "post" or posts_only %}
+                        <label for="sort">Sort By</label><br>
+                        <select name="sort" id="sort">
+                            <option value="">Popularity</option>
+                            <option value="title" {% if request.GET.sort == "title" %}selected{% endif %}>Title</option>
+                            <option value="date" {% if request.GET.sort == "date" %}selected{% endif %}>Date Created
+                            </option>
+                            <option value="author" {% if request.GET.sort == "author" %}selected{% endif %}>Author
+                            </option>
+                        </select>
+                        <br>
+                        <br>
+                        <label for="order">Order By</label>
+                        <select name="order" id="order">
+                            <option value="">Descending</option>
+                            <option value="ascending" {% if request.GET.order == "ascending" %}selected{% endif %}>
+                                Ascending
+                            </option>
+                        </select>
+                        <br>
+                        <br>
+                        <input type="hidden" name="scope" value="{{ request.GET.scope }}">
+                    {% endif %}
+                    <button type="submit">Submit</button>
+                </form>
             </div>
-        </div>
-    {% else %}
-        <h1>No Results Found</h1>
-    {% endif %}
+            <div class="search-container">
+                {% if users.has_other_pages %}
+                    <div class="pagination">
+                        {% if users.has_previous %}
+                            <a href="{{ search_url }}&page={{ results.previous_page_number }}">
+                                <ion-icon name="play-skip-back-outline"></ion-icon>
+                            </a>
+                        {% else %}
+                            <div class="disabled"><span><ion-icon name="play-skip-back-outline"></ion-icon></span></div>
+                        {% endif %}
+                        {% for i in paginator.page_range %}
+                            {% if users.number == i %}
+                                <div class="active"><span>{{ i }}</span></div>
+                            {% else %}
+                                <a href="{{ search_url }}&page={{ i }}">
+                                    <div>{{ i }}</div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                        {% if users.has_next %}
+                            <a href="{{ search_url }}&page={{ results.next_page_number }}">
+                                <div>
+                                    <ion-icon name="play-skip-forward-outline"></ion-icon>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="disabled"><span><ion-icon name="play-skip-forward-outline"></ion-icon></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div id="results">
+                    {% for r in results %}
+                        {% if r.user is not None %}
+                            {% profile_card request r.user %}
+                        {% else %}
+                            {% post_card r %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <h1>No Results Found</h1>
+        {% endif %}
 
-</div>
+    </div>
 {% endblock %}
 
 {% load static %}

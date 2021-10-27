@@ -30,7 +30,7 @@ a {
 }
 a:hover {
     color: var(--text-color-dim);
-    text-decoration: underline !important;
+    text-decoration: underline;
 }
 
 body#tinymce {
@@ -64,7 +64,7 @@ body#tinymce {
     background-color: var(--tertiary-color);
     cursor: pointer;
 }
-
+a.postcard{text-decoration: none}
 .postcard-infobar {
     display: flex;
     justify-content: space-between;
@@ -105,6 +105,7 @@ body#tinymce {
     width: min(25vw, 180px);
     height: 125px;
     aspect-ratio: 180/125;
+    border-radius: var(--border-radius);
 }
 
 .postcard-data {
@@ -328,6 +329,7 @@ ion-icon {
 .center {
     margin-right: auto;
     margin-left: auto;
+    max-width: 100%;
 }
 
 img {
@@ -371,7 +373,31 @@ iframe {
     border-style: solid;
     border-color: var(--button-border);
 }
+.pagination {
+    list-style-type: none;
+    display: flex;
+    border: 1px solid var(--button-border);
+    align-items: center;
+    padding: 5px;
+}
+.pagination div {
+    padding: 3px 10px;
+}
+.pagination div.active * {
+    color: var(--text-color-dim) !important;
+    font-size: 20px;
+    font-weight: 100;
+}
 
+.pagination .disabled * {
+    color: var(--text-color-dim) !important;
+}
+.pagination a:hover *{
+    color: var(--active_btn);
+}
+.pagination {
+    border-radius: var(--border-radius);
+}
 
 @media only screen and (max-width: 600px){
     #navLinks {

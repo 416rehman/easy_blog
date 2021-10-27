@@ -25,18 +25,19 @@ function featured_image_handler(event) {
       return;
     }
 
+    const featured_image_form_input = document.getElementById('id_featured_image')
     for (const i of images){
       const div = document.createElement('div')
       const img = document.createElement('img')
       img.src = i
       div.appendChild(img)
       div.addEventListener("click", function () {
-        const selected = document.getElementById('id_featured_image')
-        if (selected)
-          selected.value = img.src
+        if (featured_image_form_input)
+          featured_image_form_input.value = img.src
           selector.style.display = 'none'
           allImagesElement.textContent = '';
       })
+      if (featured_image_form_input.value == i) img.classList.add("selected")
       allImagesElement.appendChild(div)
     }
   } else {

@@ -1,5 +1,5 @@
 {% load hitcount_tags %}
-<div class="postcard" onclick="location.href=`{% url 'post_detail' post.slug %}`;">
+<a class="postcard" href="{% url 'post_detail' post.slug %}">
     <div class="postcard-data">
         <div style="width: 100%">
             <div class="postcard-infobar">
@@ -11,11 +11,13 @@
             <h3 id="postTitle">{{ post.title | title }}</h3>
             <span id="postContent">{{ post.excerpt | slice:":200" | title }}</span>
         </div>
-        <img class="featured-image" src="{{ post.featured_image }}" alt="Featured Image for the post titled '{{ post.title }}'"/>
+        {% if post.featured_image %}
+            <div class="featured-image" style='background: url("{{ post.featured_image }}"); background-size: cover;' ></div>
+        {% endif %}
     </div>
     <div id="meta">
         <span id="date">{{ post.created_on | date:"M d Y" }}</span>
         <span>{{ post.reading_time }} min read  ·  {% get_hit_count for post %} <ion-icon
                 name="eye-outline"></ion-icon></span>
     </div>
-</div>
+</a>

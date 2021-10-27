@@ -17,9 +17,27 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     is_email_verified = models.BooleanField(default=False)
+    followers = models.ManyToManyField('self', symmetrical=False, blank=True)
 
     class Meta:
         db_table = 'auth_user'
+
+    @property
+    def count_followers(self):
+        return self.followers.count()
+
+    @property
+    def count_following(self):
+        return User.objects.filter(followers=self).count()
+
+    def is_followed_by(self, username):
+        return self.followers.filter(username=username).exists()
+
+    def follow(self, user_to_follow):
+        return user_to_follow.followers.add(self)
+
+    def unfollow(self, user_to_unfollow):
+        return user_to_unfollow.followers.remove(self)
 
     def save(self, *args, **kwargs):
         if not self.is_email_verified and self.email:
@@ -37,17 +55,3 @@ class User(AbstractUser):
         to_email = self.email
         send_mail(mail_subject, strip_tags(message), 'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>', [to_email],
                   html_message=message)
-
-
-class Followers(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    following_user = models.ManyToManyField(User, related_name='following_user', null=True, blank=True)
-
-    def __str__(self):
-        return self.user.username
-
-
-@receiver(post_save, sender=get_user_model())  # add this
-def create_followers(sender, instance, created, **kwargs):
-    if created:
-        Followers.objects.create(user=instance)

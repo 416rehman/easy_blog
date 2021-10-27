@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from .models import Post
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -10,16 +11,14 @@ class TrendManager:
     scheduler = None
 
     def update(self):
-        print('updating Trends')
-
         if self.upcoming_posts:
             self.trending_posts = self.upcoming_posts
             if self.trending_posts:
-                self.trending_authors = self.trending_posts.values('author', 'author__username', 'author__first_name',
-                                                                   'author__last_name', 'author__profile__bio',
-                                                                   'author__profile__avatar', 'author__profile__banner').order_by(
-                    'author').annotate(total_views=Sum('hourly_views'))
-                print(f'Trending Authors: {bool(self.trending_authors)}')
+                post_authors = self.trending_posts.values('author').values_list('author', flat=True)
+                if post_authors.count():
+                    self.trending_authors = get_user_model().objects.filter(pk__in=post_authors).annotate(total_views=Sum('blog_posts__hourly_views')).order_by('-total_views').distinct()
+                    print('Trending Authors')
+                    print(self.trending_authors)
 
         print(f'Trending Posts: {bool(self.trending_posts)}')
 

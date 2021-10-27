@@ -1,6 +1,8 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
@@ -12,7 +14,6 @@ from django.views.generic import UpdateView
 from blog.forms import ReportForm
 from blog.models import Post
 from users.forms import UserForm, ProfileForm, SignupForm
-from users.models import Followers
 from users.tokens import account_activation_token
 
 
@@ -87,23 +88,22 @@ def EditProfileView(request, username):
 
 
 def ProfileView(request, username):
-    following = False
-    followers = None
+    following = follows_back = False
     if request.user.username == username:
         user = request.user
-        posts = Post.objects.filter(author=user)
+        posts = Post.objects.filter(author__username=user.username)
     else:
         user = get_user_model().objects.get(username=username)
-        posts = Post.objects.filter(author=user, status=1)
+        posts = Post.objects.filter(author__username=user.username, status=1)
         if request.user.is_authenticated:
-            session_user = get_user_model().objects.get(username=request.user.username)
-            followers = Followers.objects.get(user=session_user)
-            following = followers.following_user.filter(username=user.username).exists()
+            following = user.is_followed_by(request.user.username)
+            follows_back = request.user.is_followed_by(user.username)
 
     context = {
         'requested_profile': user,
         'posts': posts,
-        'following': following
+        'following': following,
+        'follows_back': follows_back
     }
 
     return render(request, 'profile.html', context=context)
@@ -160,16 +160,49 @@ class InactiveUserView(UpdateView):
 
 
 @login_required()
-def FollowUserView(request, username):
+def AJAX_FollowUserView(request, username):
     session_user = get_user_model().objects.get(username=request.user.username)
     other_user = get_user_model().objects.get(username=username)
 
+    action = "Failed to follow {0}".format(username)
     if session_user.username != other_user.username:
-        followers_user = Followers.objects.get(user=session_user.id)
-        if followers_user.following_user.filter(username=other_user.username).exists():
-            followers_user.following_user.remove(other_user)
-            messages.add_message(request, messages.ERROR, 'Unfollowed {0}'.format(other_user.username))
+        if other_user.is_followed_by(session_user.username):
+            session_user.unfollow(other_user)
+            action = 'Unfollowed {0}'.format(other_user.username)
         else:
-            followers_user.following_user.add(other_user)
-            messages.add_message(request, messages.SUCCESS, 'Followed {0}'.format(other_user.username))
-    return redirect('profile_page', username=other_user.username)
+            session_user.follow(other_user)
+            action = 'Followed {0}'.format(other_user.username)
+
+    return JsonResponse({'action': action})
+
+
+@login_required()
+def UserFollowersView(request, username):
+    target_user = get_object_or_404(get_user_model(), username=username)
+    target_followers = target_user.followers.all()
+    page = request.GET.get('p', 1)
+
+    paginator = Paginator(target_followers, 10)
+    try:
+        followers = paginator.page(page)
+    except PageNotAnInteger:
+        followers = paginator.page(1)
+    except EmptyPage:
+        followers = paginator.page(paginator.num_pages)
+    return render(request, 'followers.html', {'users': followers, 'target_user': target_user})
+
+
+@login_required()
+def UserFollowingView(request, username):
+    target_user = get_object_or_404(get_user_model(), username=username)
+    target_following = get_user_model().objects.filter(followers__username=username)
+    page = request.GET.get('p', 1)
+
+    paginator = Paginator(target_following, 10)
+    try:
+        following = paginator.page(page)
+    except PageNotAnInteger:
+        following = paginator.page(1)
+    except EmptyPage:
+        following = paginator.page(paginator.num_pages)
+    return render(request, 'following.html', {'users': following, 'target_user': target_user})

@@ -206,8 +206,8 @@ class SearchView(generic.View):
             all_qs = user_qs
 
         if all_qs:
-            paginator = Paginator(all_qs, per_page=5)
-            page_number = request.GET.get('page', 1)
+            paginator = Paginator(all_qs, per_page=1)
+            page_number = request.GET.get('page', 5)
             page_obj = paginator.get_page(page_number).object_list
 
         search_url = re.sub('&*(?:page=)\d*', '', request.get_full_path())

@@ -100,7 +100,7 @@ CSP_STYLE_SRC = ["'self'",
                  "cdnjs.cloudflare.com",
                  "https://fonts.googleapis.com"]
 CSP_FONT_SRC = ['https://fonts.gstatic.com']
-CSP_CONNECT_SRC = ['https://unpkg.com/']
+CSP_CONNECT_SRC = ["'self'", 'https://unpkg.com/']
 CSP_INCLUDE_NONCE_IN = ['script-src']
 CSP_OBJECT_SRC = ["'none'"]
 # CSP_REPORT_URI = ["http://localhost:8000/fake-report-uri/"]

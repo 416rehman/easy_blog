@@ -21,7 +21,7 @@ div#images {
 #images > div > img:hover {
     filter: brightness(1.1);
     cursor: pointer;
-    border: solid 2px cornflowerblue;
+    border: solid 2px var(--text-color-dim);
 }
 
 #featured_image_selector {
@@ -34,4 +34,8 @@ div#images {
     border: 2px solid var(--tertiary-color);
     padding: 10px;
     align-items: center;
+}
+.selected {
+    filter: brightness(1.1);
+    border: solid 2px cornflowerblue;
 }

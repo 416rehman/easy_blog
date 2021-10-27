@@ -1,9 +1,13 @@
 #filter_controls {
+    padding: 0 10px;
     display: flex;
     align-items: center;
     gap: 5px;
 }
-
+#filter_controls > button {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
 #filter_controls > form {
     margin-left: auto;
 }

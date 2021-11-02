@@ -5,7 +5,16 @@
     gap: 20px;
     width: min(90vw, 500px);
 }
-
+#filter_controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 1px;
+}
+#filter_controls button {
+    width: 300px;
+    max-width: 100%;
+    border-radius: 0;
+}
 #filter_btn {
     display: none;
 }

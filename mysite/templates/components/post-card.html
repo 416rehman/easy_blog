@@ -1,9 +1,9 @@
-{% load hitcount_tags %}
+{% load template_tags %}
 <a class="postcard" href="{% url 'post_detail' post.slug %}">
     <div class="postcard-data">
         <div style="width: 100%">
             <div class="postcard-infobar">
-                <p id="postAuthor">@{{ post.author }}</p>
+                <p id="postAuthor">@{{ post.author.username }}</p>
                 {% if post.status == 0 %}
                     <div class="postcard-tag alert-error">Unpublished</div>
                 {% endif %}
@@ -17,7 +17,7 @@
     </div>
     <div id="meta">
         <span id="date">{{ post.created_on | date:"M d Y" }}</span>
-        <span>{{ post.reading_time }} min read  ·  {% get_hit_count for post %} <ion-icon
+        <span>{{ post.reading_time }} min read  · {{ post.views }} <ion-icon
                 name="eye-outline"></ion-icon></span>
     </div>
 </a>

@@ -23,7 +23,7 @@ class ProfileForm(forms.ModelForm):
         widgets = {
             'avatar': forms.FileInput(attrs={'aria-label': 'Avatar'}),
             'banner': forms.FileInput(attrs={'aria-label': 'Banner'}),
-            'bio': Textarea(attrs={'aria-label': 'bio', 'cols': 20, 'rows': 4, 'oninput': "auto_grow(this)",
+            'bio': Textarea(attrs={'aria-label': 'bio', 'cols': 20, 'rows': 6, 'oninput': "auto_grow(this)",
                                    'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Bio'}),
             'github': forms.TextInput(attrs={'aria-label': 'Github URL', 'placeholder': 'https://github.com/...'}),
             'linkedin': forms.TextInput(attrs={'aria-label': 'LinkedIn URL', 'placeholder': 'https://linkedin.com/in/...'}),

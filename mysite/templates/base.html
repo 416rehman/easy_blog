@@ -26,8 +26,8 @@
         <div id="leftnav">
             <a href="{% url 'home' %}">Easy Blog</a>
         </div>
-        <form action="{% url 'search' %}" id="search_bar">
-                <input type="text" aria-label="search" name="q" placeholder="Search">
+        <form action="{% url 'postdocument-list' %}" id="search_bar">
+                <input type="text" aria-label="search" name="search" placeholder="Search">
         </form>
         <div style="display: flex; align-items: center;">
             <a href="{% url 'new_post' %}">Write</a>
@@ -43,14 +43,15 @@
     </div>
     <div id="navlinksContainer">
         <div id="navLinks">
-            <a onclick="SwitchTheme()"><div>Switch Theme <ion-icon name="contrast-outline"></ion-icon></div></a>
             {% if user.is_authenticated %}
-                <a href="{% url 'profile_page' user.username %}"><div>{{user.username}}</div></a>
-                <a href="{% url 'logout' %}"><div>Logout</ion-icon></div></a>
+                <a href="{% url 'profile_page' user.username %}"><div><ion-icon name="person-circle-outline"> </ion-icon><span>{% if user.first_name %}{{ user.first_name | title }}{% else %}{{user.username}}{% endif %}</span></div></a>
+                <a href="{% url 'edit_profile' user.username %}"><div><ion-icon name="settings-outline"></ion-icon> <span>Settings</span></div></a>
+                <a href="{% url 'logout' %}"><div><ion-icon name="log-out-outline"></ion-icon> <span>Sign Out</span></div></a>
             {% else %}
-                <a href="{% url 'signup' %}"><div>Sign Up</div></a>
-                <a href="{% url 'login' %}"><div>Log In</div></a>
+                <a href="{% url 'signup' %}"><div><span>Sign Up</span></div></a>
+                <a href="{% url 'login' %}"><div><span>Log In</span></div></a>
             {% endif %}
+            <a onclick="SwitchTheme()"><div><ion-icon name="contrast-outline"></ion-icon> <span>Switch Theme</span></div></a>
         </div>
     </div>
 </nav>

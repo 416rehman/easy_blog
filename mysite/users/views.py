@@ -163,7 +163,7 @@ class InactiveUserView(UpdateView):
 def AJAX_FollowUserView(request, username):
     session_user = get_user_model().objects.get(username=request.user.username)
     other_user = get_user_model().objects.get(username=username)
-
+    print("WTF")
     action = "Failed to follow {0}".format(username)
     if session_user.username != other_user.username:
         if other_user.is_followed_by(session_user.username):

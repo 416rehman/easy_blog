@@ -22,10 +22,12 @@
     background-color: var(--tertiary-color);
     cursor: pointer;
 }
-.profile_card > a > img{
+.profile_card_avatar{
     border-radius: var(--border-radius);
     width: 135px;
     height: 135px;
+    background-position: center;
+    background-size: 100%;
     object-fit: cover;
     aspect-ratio: 1;
 }
@@ -53,6 +55,11 @@
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .profile-card-banner {

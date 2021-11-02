@@ -8,6 +8,7 @@ class BlogConfig(AppConfig):
     trend_manager = None
 
     def ready(self):
+        print('READY')
         from .trend_manager import TrendManager
-        self.trend_manager = TrendManager()
-        self.trend_manager.start(0.3)
+        self.trend_manager = TrendManager(0.3)
+        self.trend_manager.start()

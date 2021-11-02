@@ -29,11 +29,18 @@ form {
     align-items: center;
 }
 
-.form-group *:not(input, .errorlist *) {
+.form-group *:not(input,textarea, .errorlist *) {
     font-size: 14px;
     color: var(--text-color-dim) !important;
 }
 
+#urls {
+    display: flex; flex-wrap: wrap; gap: 10px
+}
+#urls input {
+    width: 350px;
+    max-width: 100%;
+}
 .form-group #userDataContainer {
     display: flex;
     flex-direction: column;

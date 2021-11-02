@@ -16,12 +16,7 @@
                 <h1>No Trends Found</h1>
         {% endif %}
         {% for author in authors %}
-            {% if filter == 'trending' %}
-                {% profile_card request author %}
-            {% else %}
-                {% profile_card request author %}
-            {% endif %}
-
+            {% profile_card request author %}
         {% endfor %}
     </div>
 {% endblock %}

@@ -21,13 +21,12 @@ STATUS = (
 
 
 class Post(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     updated_on = models.DateTimeField(auto_now=True)
     excerpt = models.TextField(max_length=200, blank=False, null=False)
     content = HTMLField()
-    raw_content = models.TextField(blank=True, null=True, default='')
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=STATUS, default=0)
     taglist = models.TextField(max_length=200, blank=True, null=True)
@@ -55,11 +54,16 @@ class Post(models.Model):
     def reading_time(self):
         return max([1, int(len(self.raw_content.split(' ')) / 275)])
 
+    @property
+    def raw_content(self):
+        """content for indexing.
+        Used in Elasticsearch indexing.
+        """
+        return " ".join(strip_tags(str(self.content)).split())
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = unique_slugify(self, slugify(self.title))
-        if self.content:
-            self.raw_content = " ".join(strip_tags(str(self.content)).split())
         super().save(*args, **kwargs)
 
 

@@ -11,7 +11,6 @@ from django.urls import reverse_lazy, reverse
 from elasticsearch_dsl import Q
 from hitcount.views import HitCountDetailView
 
-from .documents import UserDocument, PostDocument
 from .forms import PostForm, ReportForm
 from .models import Post
 from django.conf import settings
@@ -35,6 +34,7 @@ def TrendingAuthorsView(request):
     queryset = q_filter = None
     if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
         queryset = apps.get_app_config('blog').trend_manager.trending_authors
+        print(queryset)
         q_filter = 'trending'
 
     if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
@@ -151,69 +151,6 @@ def DeletePostView(request, slug):
 
     messages.success(request, 'An error occured while deleting the post.')
     return render(request, 'index.html')
-
-
-class SearchView(generic.View):
-    def get(self, request):
-        search_type = request.GET.get('type') or None
-        search_sort = request.GET.get('sort') or None
-        search_order = request.GET.get('order') or None
-        search_scope = request.GET.get('scope') or None
-        search_scope = search_scope.split(',') if search_scope else None
-        user_qs = post_qs = all_qs = paginator = page_obj = None
-
-        if not search_type or search_type == 'user':
-            fields = search_scope if search_scope else [
-                'user.username',
-                'user.first_name',
-                'user.last_name',
-                'bio',
-            ]
-            user_q = Q('multi_match', query=request.GET.get('q'),
-                       fields=fields, fuzziness='auto')
-            user_search = UserDocument.search().query(user_q)
-            user_qs = user_search.to_queryset()
-
-        if not search_type or search_type == 'post':
-            fields = search_scope if search_scope else [
-                'title',
-                'excerpt',
-                'taglist',
-                'raw_content'
-            ]
-            post_q = Q('multi_match', query=request.GET.get('q'),
-                       fields=fields, fuzziness='auto')
-            post_search = PostDocument.search().query(post_q)
-            post_qs = post_search.to_queryset()
-            post_qs = post_qs.filter(status=1)
-
-        if search_type == 'post' and search_sort and post_qs:
-            if search_sort == 'author':
-                post_qs = post_qs.order_by('author' if search_order == 'ascending' else '-author')
-            elif search_sort == 'date':
-                post_qs = post_qs.order_by('created_on' if search_order == 'ascending' else '-created_on')
-            elif search_sort == 'title':
-                post_qs = post_qs.order_by('title' if search_order == 'ascending' else '-title')
-        elif post_qs:  # Default sort by popularity
-            post_qs = post_qs.order_by(
-                'hit_count_generic__hits' if search_order == 'ascending' else '-hit_count_generic__hits')
-
-        if post_qs and user_qs:
-            all_qs = list(chain(user_qs, post_qs))
-        elif post_qs:
-            all_qs = post_qs
-        elif user_qs:
-            all_qs = user_qs
-
-        if all_qs:
-            paginator = Paginator(all_qs, per_page=1)
-            page_number = request.GET.get('page', 5)
-            page_obj = paginator.get_page(page_number).object_list
-
-        search_url = re.sub('&*(?:page=)\d*', '', request.get_full_path())
-        return render(request, 'search.html',
-                      {'paginator': paginator or None, 'results': page_obj or None, 'search_url': search_url,
-                       'posts_only': not user_qs})
 
 
 @login_required

@@ -177,6 +177,11 @@ a.postcard{text-decoration: none}
 }
 #navLinks a > div {
     padding: 10px;
+    text-align: left;
+    font-weight: 400;
+}
+#navLinks a > div > span {
+    padding: 0 10px;
 }
 #navLinks a > div:hover {
     background-color: var(--secondary-color);
@@ -325,6 +330,7 @@ ion-icon {
 
 #injectedContainer {
     display: flex;
+    flex-direction: column;
 }
 .center {
     margin-right: auto;
@@ -380,17 +386,18 @@ iframe {
     align-items: center;
     padding: 5px;
 }
-.pagination div {
+.pagination ion-icon {
+    font-size: 20px;
+}
+.pagination div, .pagination a {
     padding: 3px 10px;
 }
-.pagination div.active * {
-    color: var(--text-color-dim) !important;
-    font-size: 20px;
-    font-weight: 100;
+.pagination a {
+    font-weight: 400;
 }
 
 .pagination .disabled * {
-    color: var(--text-color-dim) !important;
+    color: var(--button-border) !important;
 }
 .pagination a:hover *{
     color: var(--active_btn);

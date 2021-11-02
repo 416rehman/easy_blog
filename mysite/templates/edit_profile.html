@@ -34,13 +34,19 @@
                 <label for="id_email">Email</label>{{userForm.email}}<br>
                 <label for="id_bio">Bio</label>{{profileForm.bio}}<br>
                 <span>URLs / Links</span>
-                <div>
-                    <label for="id_github">Github</label>
-                    {{profileForm.github}}
-                    <label for="id_linkedin">LinkedIn</label>
-                    {{profileForm.linkedin}}
-                    <label for="id_website">Website</label>
-                    {{profileForm.website}}
+                <div id="urls">
+                    <span>
+                        <label for="id_github">Github</label>
+                        {{profileForm.github}}
+                    </span>
+                    <span>
+                        <label for="id_linkedin">LinkedIn</label>
+                        {{profileForm.linkedin}}
+                    </span>
+                    <span>
+                        <label for="id_website">Website</label>
+                        {{profileForm.website}}
+                    </span>
                 </div>
                 <hr style="width: 100%">
             </div>

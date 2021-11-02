@@ -16,21 +16,24 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
+from search.urls import urlpatterns as search_index_urls
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('auth/login/', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
                   path('auth/logout/', auth_views.LogoutView.as_view(), name='logout'),
                   path('recover/',
-                       auth_views.PasswordResetView.as_view(html_email_template_name='email_templates/password_reset_email'
-                                                                                     '.html'), name='password_reset'),
+                       auth_views.PasswordResetView.as_view(
+                           html_email_template_name='email_templates/password_reset_email'
+                                                    '.html'), name='password_reset'),
                   path('recover/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
                   path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(),
                        name='password_reset_confirm'),
                   path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
                   path('tinymce/', include('tinymce.urls')),
+                  re_path(r'^search/', include(search_index_urls)),
                   path('', include('users.urls')),
                   path('', include('blog.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,

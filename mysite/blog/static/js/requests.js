@@ -3,7 +3,10 @@ function follow(e, username) {
     e.stopPropagation();
     console.log(window.location.origin + '/@'+username+'/follow')
     fetch(window.location.origin + '/@'+username+'/follow')
-        .then(response => response.json())
+        .then(response => {
+            console.log(response)
+            return response.json()
+        })
         .then(data => {
             console.log(e.target.innerHTML)
             generateMessage(data.action)

@@ -1,5 +1,3 @@
-import os
-
 from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from .models import Post
@@ -16,7 +14,6 @@ class TrendManager:
         print('CREATED TREND MANAGER')
 
     def update(self):
-        os.system('cls')
         if self.upcoming_posts:
             self.trending_posts = self.upcoming_posts
 

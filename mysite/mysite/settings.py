@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import re
+import mimetypes
 
 from dotenv import load_dotenv
 
@@ -25,10 +26,15 @@ TEMPLATES_DIRS = os.path.join(BASE_DIR, 'templates')
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
-PROJECT_ROOT = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "blog\static"),
+]
+print(os.path.join(BASE_DIR, "blog/static"))
+mimetypes.add_type("text/css", ".css", True)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 # Quick-start development settings - unsuitable for production
@@ -38,9 +44,9 @@ MEDIA_URL = '/media/'
 SECRET_KEY = os.getenv('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -64,6 +70,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

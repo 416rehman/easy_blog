@@ -21,7 +21,7 @@ class ActivateAccountView(View):
     def get(self, request, uidb64, token):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
-            user = get_user_model().objects.get(pk=uid)
+            user = get_object_or_404(get_user_model(), pk=uid)
         except (TypeError, ValueError, OverflowError, get_user_model().DoesNotExist):
             user = None
 
@@ -93,7 +93,8 @@ def ProfileView(request, username):
         user = request.user
         posts = Post.objects.filter(author__username=user.username)
     else:
-        user = get_user_model().objects.get(username=username)
+
+        user = get_object_or_404(get_user_model(), username=username)
         posts = Post.objects.filter(author__username=user.username, status=1)
         if request.user.is_authenticated:
             following = user.is_followed_by(request.user.username)
@@ -143,7 +144,7 @@ class InactiveUserView(UpdateView):
     success_url = '/activate'
 
     def get_object(self, **kwargs):
-        return get_user_model().objects.get(pk=self.request.user.pk)
+        return get_object_or_404(get_user_model(), pk=self.request.user.pk)
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -161,9 +162,9 @@ class InactiveUserView(UpdateView):
 
 @login_required()
 def AJAX_FollowUserView(request, username):
-    session_user = get_user_model().objects.get(username=request.user.username)
-    other_user = get_user_model().objects.get(username=username)
-    print("WTF")
+    session_user = get_object_or_404(get_user_model(), username=request.user.username)
+    other_user = get_object_or_404(get_user_model(), username=username)
+
     action = "Failed to follow {0}".format(username)
     if session_user.username != other_user.username:
         if other_user.is_followed_by(session_user.username):

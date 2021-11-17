@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% block homepage %}
+    {%  load template_tags %}
+    <div id="filter_controls">
+        <button class="flat" onclick="location.href=`{% url 'home' %}`">Posts</button>
+        <button class="flat active">Authors</button>
+        <form method="get">
+            <select name="filter" id="filter" onchange="this.form.submit()">
+                <option value="trending">Trending</option>
+                <option value="new" {% if filter == 'new' %}selected{% endif %}>New</option>
+            </select>
+        </form>
+    </div>
+    <div id="trending_container">
+        {% if not authors %}
+                <h1>No Trends Found</h1>
+        {% endif %}
+        {% for author in authors %}
+            {% profile_card request author %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/trending.css' %}">
+{% endblock %}

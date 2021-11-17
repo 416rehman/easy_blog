@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load template_tags %}
+{% block content %}
+    <div id="filter_controls" class="center ">
+        <button class="flat" onclick="location.href=`/search/posts/{% if request.GET.search %}?search={{ request.GET.search }}{% endif %}`">Posts</button>
+        <button class="flat active">Users</button>
+    </div>
+    <br>
+    <div class="center side_by_side">
+        <div class="side_bar">
+            <button id="filter_btn" style="width: 100%" onclick="toggle('filter_form', 'block', 600)">Filter
+                <ion-icon name="funnel-outline"></ion-icon>
+            </button>
+            <form id="filter_form" action="">
+                <label for="search">Query</label><br>
+                <input id="search" type="text" name="search" aria-label="query" placeholder="Query"
+                       value="{{ request.GET.search }}">
+                <br>
+                <br>
+                <label for="in_field">Search in</label><br>
+                <select name="in_field" id="in_field">
+                    <option value="all">All</option>
+                    <option value="username" {% if request.GET.in_field == "username" %}selected{% endif %}>Username</option>
+                    <option value="first_name" {% if request.GET.in_field == "first_name" %}selected{% endif %}>First Name</option>
+                    <option value="last_name" {% if request.GET.in_field == "last_name" %}selected{% endif %}>Last Name
+                    </option>
+                    <option value="profile.bio" {% if request.GET.in_field == "profile.bio" %}selected{% endif %}>Bio
+                    </option>
+                    <option value="profile.github" {% if request.GET.in_field == "profile.github" %}selected{% endif %}>Github URL
+                    </option>
+                    <option value="profile.website" {% if request.GET.in_field == "profile.website" %}selected{% endif %}>Website URL
+                    </option>
+                    <option value="profile.linkedin" {% if request.GET.in_field == "profile.linkedin" %}selected{% endif %}>LinkedIn URL
+                    </option>
+                </select>
+                <br>
+                <br>
+                <label for="ordering">Sort By</label><br>
+                <select name="ordering" id="ordering">
+                    <option value="">Relevance</option>
+                    <option value="count_followers"
+                            {% if request.GET.ordering == "count_followers" or request.GET.ordering == "-count_followers" %}selected{% endif %}>
+                        Followers
+                    </option>
+                    <option value="count_following"
+                            {% if request.GET.ordering == "count_following" or request.GET.ordering == "-count_following" %}selected{% endif %}>
+                        Following
+                    </option>
+                </select>
+                <br>
+                <br>
+                <label for="order">Order By</label>
+                <select name="order" id="order">
+                    <option value="">Descending</option>
+                    <option value="ascending" {% if request.GET.order == "ascending" %}selected{% endif %}>
+                        Ascending
+                    </option>
+                </select>
+                <br>
+                <br>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        {% if results %}
+            <div class="search-container">
+                {{ paginator.count.length }}
+                {% if paginator.next or paginator.previous %}
+                    <div class="pagination" style="font-weight: 100; font-size: 15px">
+                        {% if paginator.previous %}
+                            <a href="{{ paginator.previous }}">
+                                <ion-icon name="play-skip-back-outline"></ion-icon>
+                            </a>
+                        {% else %}
+                            <div class="disabled"><span><ion-icon name="play-skip-back-outline"></ion-icon></span></div>
+                        {% endif %}
+                        <form action="">
+                            <span>Page <input type="text" name="page" value="{{ paginator.current_page }}"
+                                              style="width: 40px; text-align-last: center;font-weight: 600;font-size: 16px;"/> of {{ paginator.count }}</span>
+                            {% for k,v in request.GET.items %}
+                                {% if k != 'page' %}
+                                    <input type="hidden" name="{{ k }}" value="{{ v }}"/>
+                                {% endif %}
+                            {% endfor %}
+                        </form>
+                        {% if paginator.next %}
+                            <a href="{{ paginator.next }}">
+                                <div>
+                                    <ion-icon name="play-skip-forward-outline"></ion-icon>
+                                </div>
+                            </a>
+                        {% else %}
+                            <div class="disabled"><span><ion-icon name="play-skip-forward-outline"></ion-icon></span>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <div id="results">
+                    {% for r in results %}
+                        {% profile_card request r false false %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <h1>No Posts Found</h1>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}

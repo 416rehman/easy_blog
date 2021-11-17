@@ -1,0 +1,86 @@
+.edit_profile {
+    width: 90%;
+}
+
+#mediaContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    position: relative;
+    width: 100%;
+    height: 350px;
+}
+#id_bio {
+    resize: none;
+    width: 100%;
+}
+#avatar {
+    border-radius: 100%;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group *:not(input,textarea, .errorlist *) {
+    font-size: 14px;
+    color: var(--text-color-dim) !important;
+}
+
+#urls {
+    display: flex; flex-wrap: wrap; gap: 10px
+}
+#urls input {
+    width: 350px;
+    max-width: 100%;
+}
+.form-group #userDataContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+#mediaContainer label {
+    cursor: pointer;
+    background-color: var(--secondary-color);
+    padding: 2px 5px;
+    position: absolute;
+    bottom: 20px;
+    display: block;
+    z-index: 10;
+    border-radius: var(--border-radius);
+}
+#mediaContainer label:hover {
+    background-color: var(--tertiary-color);
+}
+#id_avatar, #id_banner {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+}
+#banner_lbl {
+    right: 20px;
+}
+#banner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    z-index: -100;
+}
+
+#avatar_container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}

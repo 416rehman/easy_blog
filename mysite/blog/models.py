@@ -1,3 +1,4 @@
+from background_task import background
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericRelation
@@ -20,6 +21,29 @@ STATUS = (
 )
 
 
+class PostManager(models.Manager):
+    trending = None
+    upcoming_posts = None
+
+    @background(schedule=5)
+    def update_trends(self):
+        print('TRENDS UPDATING')
+        if self.upcoming_posts:
+            self.trending = self.upcoming_posts
+
+        self.upcoming_posts = self.filter(status=1)
+        for post in self.upcoming_posts:
+            post.hourly_views = post.views - post.last_views_snapshot or 0
+            post.last_views_snapshot = post.views
+            post.save()
+        self.upcoming_posts = self.upcoming_posts.filter(hourly_views__gt=0).order_by('-hourly_views')
+
+    def reset_snapshot(self):
+        for post in self.all():
+            post.last_views_snapshot = post.views
+            post.save()
+
+
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     title = models.CharField(max_length=200)
@@ -35,6 +59,7 @@ class Post(models.Model):
     hourly_views = models.IntegerField(editable=False, default=0)
     last_views_snapshot = models.IntegerField(editable=False, default=0)
     featured_image = models.TextField(blank=True, null=True, default='')
+    objects = PostManager()
 
     class Meta:
         ordering = ['-created_on']
@@ -159,19 +184,6 @@ class Report(models.Model):
 
     def __str__(self):
         return str(self.pk)
-
-
-@receiver(post_save, sender=get_user_model())  # add this
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=get_user_model())  # add this
-def save_user_profile(sender, instance, **kwargs):
-    if not instance.profile.avatar:
-        instance.profile.avatar = "images/profile/default.jpg"
-    instance.profile.save()
 
 
 @receiver(post_delete, sender=Post)

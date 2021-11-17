@@ -1,14 +1,9 @@
 import json
-import re
-from itertools import chain
 from django.contrib import messages
-from django.contrib.auth import get_user_model, authenticate, login
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
-from django.views import generic, View
-from django.urls import reverse_lazy, reverse
-from elasticsearch_dsl import Q
+from django.urls import reverse
 from hitcount.views import HitCountDetailView
 
 from .forms import PostForm, ReportForm
@@ -20,7 +15,7 @@ from django.apps import apps
 def TrendingPostsView(request):
     queryset = q_filter = None
     if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
-        queryset = apps.get_app_config('blog').trend_manager.trending_posts
+        queryset = Post.objects.trending
         q_filter = 'trending'
 
     if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
@@ -33,7 +28,7 @@ def TrendingPostsView(request):
 def TrendingAuthorsView(request):
     queryset = q_filter = None
     if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
-        queryset = apps.get_app_config('blog').trend_manager.trending_authors
+        queryset = get_user_model().objects.trending
         print(queryset)
         q_filter = 'trending'
 

@@ -123,9 +123,6 @@ class PostCustomDocumentViewSet(PostDocumentViewSet):
     @classonlymethod
     def as_view(cls, actions=None, **initkwargs):
         # No request object is available here
-        print('as_view')
-        print('actions: ', actions)
-        print('initkwargs: ', initkwargs)
         return super(PostCustomDocumentViewSet, cls).as_view(
             actions,
             **initkwargs
@@ -139,10 +136,6 @@ class PostCustomDocumentViewSet(PostDocumentViewSet):
     def list(self, request, *args, **kwargs):
         # Used for list routes, like
         # http://localhost:8000/search/books-custom/
-        print('list')
-        print('request: ', request)
-        print('args: ', args)
-        print('kwargs: ', kwargs)
 
         # Force Pagination
         request.GET._mutable = True
@@ -154,7 +147,7 @@ class PostCustomDocumentViewSet(PostDocumentViewSet):
         order = request.GET.get('order', '')
         if ordering and order != 'ascending':
             request.GET['ordering'] = '-' + ordering
-        print(resolve('/search/posts/'))
+
         # Field-based search
         field = request.GET.get('in_field', 0)
         query = request.GET.get('search', 0)
@@ -190,8 +183,6 @@ class PostCustomDocumentViewSet(PostDocumentViewSet):
     def suggest(self, request):
         # Used for suggest routes, like
         # http://localhost:8000/search/books-custom/suggest/?title_suggest=A
-        print('suggest')
-        print('request: ', request)
         return super(PostCustomDocumentViewSet, self).suggest(
             request
         )

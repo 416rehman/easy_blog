@@ -104,9 +104,7 @@ class UserCustomDocumentViewSet(UserDocumentViewSet):
     @classonlymethod
     def as_view(cls, actions=None, **initkwargs):
         # No request object is available here
-        print('as_view')
-        print('actions: ', actions)
-        print('initkwargs: ', initkwargs)
+
         return super(UserCustomDocumentViewSet, cls).as_view(
             actions,
             **initkwargs
@@ -120,10 +118,6 @@ class UserCustomDocumentViewSet(UserDocumentViewSet):
     def list(self, request, *args, **kwargs):
         # Used for list routes, like
         # http://localhost:8000/search/books-custom/
-        print('list')
-        print('request: ', request)
-        print('args: ', args)
-        print('kwargs: ', kwargs)
 
         # Force Pagination
         request.GET._mutable = True
@@ -178,8 +172,7 @@ class UserCustomDocumentViewSet(UserDocumentViewSet):
     def suggest(self, request):
         # Used for suggest routes, like
         # http://localhost:8000/search/books-custom/suggest/?title_suggest=A
-        print('suggest')
-        print('request: ', request)
+
         return super(UserCustomDocumentViewSet, self).suggest(
             request
         )

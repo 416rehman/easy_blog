@@ -24,8 +24,11 @@ class PostManager(models.Manager):
     upcoming_posts = None
 
     def update_trends(self):
+
         if self.upcoming_posts:
             self.trending = self.upcoming_posts
+        print('---------trending POSTS------------')
+        print(self.trending)
 
         self.upcoming_posts = self.filter(status=1)
         for post in self.upcoming_posts:
@@ -33,6 +36,8 @@ class PostManager(models.Manager):
             post.last_views_snapshot = post.views
             post.save()
         self.upcoming_posts = self.upcoming_posts.filter(hourly_views__gt=0).order_by('-hourly_views')
+        print('---------upcoming_posts------------')
+        print(self.upcoming_posts)
 
     def reset_snapshot(self):
         for post in self.all():

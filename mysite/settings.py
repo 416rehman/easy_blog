@@ -43,7 +43,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = os.getenv('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -76,48 +76,48 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'blog.middleware.RestrictInactiveUsersMiddleware',
-    'csp.middleware.CSPMiddleware',
+    # 'csp.middleware.CSPMiddleware',
 ]
 
-# HSTS settings
-SECURE_HSTS_SECONDS = 31536000  # 1 Year
-SECURE_HSTS_PRELOAD = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-
-# SameSite/HTTPS cookies
-CSRF_COOKIE_SECURE = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SAMESITE = None
-SESSION_COOKIE_SAMESITE = None
-# SECURE_SSL_REDIRECT = True
-
-# django-csp
-CSP_UPGRADE_INSECURE_REQUESTS = not DEBUG
-CSP_BASE_URI = ["'self'"]
-CSP_DEFAULT_SRC = ("'self'",)
-CSP_IMG_SRC = ["'self'", "https: data:", "blob:"]
-CSP_FRAME_SRC = ["'self'", "https:", "data:"]
-CSP_SCRIPT_SRC = [
-    "'self'",
-    "'unsafe-inline'",
-    "'unsafe-eval'",
-    "gist.github.com",
-    "https://cdnjs.cloudflare.com",
-    "https://fonts.googleapis.com",
-    "https://unpkg.com",
-    "http://127.0.0.1:8000/"
-]
-CSP_STYLE_SRC = ["'self'",
-                 "'unsafe-inline'",
-                 "https://github.githubassets.com",
-                 "cdnjs.cloudflare.com",
-                 "https://fonts.googleapis.com"]
-CSP_FONT_SRC = ['https://fonts.gstatic.com']
-CSP_CONNECT_SRC = ["'self'", 'https://unpkg.com/']
-CSP_INCLUDE_NONCE_IN = ['script-src']
-CSP_OBJECT_SRC = ["'none'"]
-# CSP_REPORT_URI = ["http://localhost:8000/fake-report-uri/"]
-CSP_REPORT_ONLY = False  # enforcement mode
+# # HSTS settings
+# SECURE_HSTS_SECONDS = 31536000  # 1 Year
+# SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#
+# # SameSite/HTTPS cookies
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SAMESITE = None
+# SESSION_COOKIE_SAMESITE = None
+# # SECURE_SSL_REDIRECT = True
+#
+# # django-csp
+# CSP_UPGRADE_INSECURE_REQUESTS = not DEBUG
+# CSP_BASE_URI = ["'self'"]
+# CSP_DEFAULT_SRC = ("'self'",)
+# CSP_IMG_SRC = ["'self'", "https: data:", "blob:"]
+# CSP_FRAME_SRC = ["'self'", "https:", "data:"]
+# CSP_SCRIPT_SRC = [
+#     "'self'",
+#     "'unsafe-inline'",
+#     "'unsafe-eval'",
+#     "gist.github.com",
+#     "https://cdnjs.cloudflare.com",
+#     "https://fonts.googleapis.com",
+#     "https://unpkg.com",
+#     "http://127.0.0.1:8000/"
+# ]
+# CSP_STYLE_SRC = ["'self'",
+#                  "'unsafe-inline'",
+#                  "https://github.githubassets.com",
+#                  "cdnjs.cloudflare.com",
+#                  "https://fonts.googleapis.com"]
+# CSP_FONT_SRC = ['https://fonts.gstatic.com']
+# CSP_CONNECT_SRC = ["'self'", 'https://unpkg.com/']
+# CSP_INCLUDE_NONCE_IN = ['script-src']
+# CSP_OBJECT_SRC = ["'none'"]
+# # CSP_REPORT_URI = ["http://localhost:8000/fake-report-uri/"]
+# CSP_REPORT_ONLY = False  # enforcement mode
 
 ROOT_URLCONF = 'mysite.urls'
 

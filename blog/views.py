@@ -10,6 +10,7 @@ from hitcount.views import HitCountDetailView
 
 from .forms import PostForm, ReportForm
 from .models import Post
+
 from django.conf import settings
 from django.apps import apps
 
@@ -17,23 +18,25 @@ from django.apps import apps
 def TrendingPostsView(request):
     queryset = q_filter = None
     if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
-        queryset = Post.objects.trending
+        queryset = trending.current_posts
         print('----------queryset------------')
-        print(Post.objects.trending)
+        print(trending.current_posts)
+        print(id(trending))
         q_filter = 'trending'
 
     if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
         queryset = Post.objects.filter(status=1)
         q_filter = 'new'
-
+    trending.update_posts()
+    print(trending.test)
     return render(request, 'trending_posts.html', {'posts': queryset, 'filter': q_filter})
 
 
 def TrendingAuthorsView(request):
     queryset = q_filter = None
     if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
-        queryset = User.objects.trending
-        print(queryset)
+        queryset = trending.current_authors
+        print(trending.current_authors)
         q_filter = 'trending'
 
     if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':

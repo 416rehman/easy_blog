@@ -19,32 +19,6 @@ STATUS = (
 )
 
 
-class PostManager(models.Manager):
-    trending = None
-    upcoming_posts = None
-
-    def update_trends(self):
-
-        if self.upcoming_posts:
-            self.trending = self.upcoming_posts
-        print('---------trending POSTS------------')
-        print(self.trending)
-
-        self.upcoming_posts = self.filter(status=1)
-        for post in self.upcoming_posts:
-            post.hourly_views = post.views - post.last_views_snapshot or 0
-            post.last_views_snapshot = post.views
-            post.save()
-        self.upcoming_posts = self.upcoming_posts.filter(hourly_views__gt=0).order_by('-hourly_views')
-        print('---------upcoming_posts------------')
-        print(self.upcoming_posts)
-
-    def reset_snapshot(self):
-        for post in self.all():
-            post.last_views_snapshot = post.views
-            post.save()
-
-
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     title = models.CharField(max_length=200)
@@ -60,7 +34,6 @@ class Post(models.Model):
     hourly_views = models.IntegerField(editable=False, default=0)
     last_views_snapshot = models.IntegerField(editable=False, default=0)
     featured_image = models.TextField(blank=True, null=True, default='')
-    objects = PostManager()
 
     class Meta:
         ordering = ['-created_on']

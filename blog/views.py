@@ -19,7 +19,7 @@ def TrendingPostsView(request):
     if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
         queryset = Post.objects.trending
         print('----------queryset------------')
-        print(queryset)
+        print(Post.objects.trending)
         q_filter = 'trending'
 
     if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':

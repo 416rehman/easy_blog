@@ -24,14 +24,14 @@ DEFAULT_DOMAIN = 'https://blog.ahmadz.ai'
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIRS = os.path.join(BASE_DIR, 'templates')
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "blog/static"),
-]
-mimetypes.add_type("text/css", ".css", True)
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "blog/static"),
+# ]
+# mimetypes.add_type("text/css", ".css", True)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -43,7 +43,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = os.getenv('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -79,16 +79,16 @@ MIDDLEWARE = [
     'csp.middleware.CSPMiddleware',
 ]
 
-# # HSTS settings
-# SECURE_HSTS_SECONDS = 31536000  # 1 Year
-# SECURE_HSTS_PRELOAD = True
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-#
-# # SameSite/HTTPS cookies
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SAMESITE = None
-# SESSION_COOKIE_SAMESITE = None
+# HSTS settings
+SECURE_HSTS_SECONDS = 31536000  # 1 Year
+SECURE_HSTS_PRELOAD = True
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# SameSite/HTTPS cookies
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = None
+SESSION_COOKIE_SAMESITE = None
 # SECURE_SSL_REDIRECT = True
 
 # django-csp
@@ -181,11 +181,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
-STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

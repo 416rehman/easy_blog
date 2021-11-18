@@ -29,7 +29,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "blog\static"),
+    os.path.join(BASE_DIR, "blog/static"),
 ]
 mimetypes.add_type("text/css", ".css", True)
 

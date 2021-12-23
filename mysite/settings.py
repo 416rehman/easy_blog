@@ -29,7 +29,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "blog\static"),
+    os.path.join(BASE_DIR, "blog/static"),
 ]
 print(os.path.join(BASE_DIR, "blog/static"))
 mimetypes.add_type("text/css", ".css", True)
@@ -44,7 +44,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = os.getenv('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 

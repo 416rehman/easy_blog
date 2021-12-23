@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block styles %}
+    {{ form.media }}
+<link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
+{% endblock %}
+
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+<div class="center edit_profile">
+    <br>
+    <div class="form-group">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+                <div id="mediaContainer">
+                    <div>
+                        <div id="banner_container">
+                            <img id="banner" src="{{ aws_media_url }}{{ profileForm.banner.value }}" alt="Banner of {{userForm.username.value}}">
+                            <label id="banner_lbl" for="id_banner">Change Banner</label> {{profileForm.banner}}
+                        </div>
+                        <div id="avatar_container">
+                            <img id="avatar" src="{{ aws_media_url }}{{ profileForm.avatar.value }}" alt="Avatar of {{userForm.username.value}}">
+                            <label for="id_avatar">Change Avatar</label> {{profileForm.avatar}}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            <br>
+            {{profileForm.banner}}
+            <div id="userDataContainer">
+                <label for="id_username">Username</label> {{userForm.username}}<br>
+                <label for="id_first_name">First Name </label> {{userForm.first_name}}<br>
+                <label for="id_last_name">Last Name </label>{{userForm.last_name}}<br>
+                <label for="id_email">Email</label>{{userForm.email}}<br>
+                <label for="id_bio">Bio</label>{{profileForm.bio}}<br>
+                <span>URLs / Links</span>
+                <div id="urls">
+                    <span>
+                        <label for="id_github">Github</label>
+                        {{profileForm.github}}
+                    </span>
+                    <span>
+                        <label for="id_linkedin">LinkedIn</label>
+                        {{profileForm.linkedin}}
+                    </span>
+                    <span>
+                        <label for="id_website">Website</label>
+                        {{profileForm.website}}
+                    </span>
+                </div>
+                <hr style="width: 100%">
+            </div>
+            <br>
+            {{userForm.errors}}
+            {{profileForm.errors}}
+            <div><button type="submit">Update</button>
+            <button type="button" onclick="window.history.go(-1); return false;">Cancel</button></div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

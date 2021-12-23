@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Page Not Found{% endblock %}
+{% block content %}
+<div class="center">
+    <h1>This Page Isn't Available</h1>
+    <p>The link may be broken, or the page may have been removed. Check to see if the link you're trying to open is correct.</p>
+
+    <a href="/"><button class="flat" aria-label="Go to Home">Go to Home</button></a>
+    <a href="javascript:history.go(-1)" aria-label="Go Back" style="font-weight: 400; margin-left: 15px;vertical-align: middle;text-decoration: solid">[Go Back]</a>
+</div>
+
+{% endblock %}

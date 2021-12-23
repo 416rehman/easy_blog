@@ -1,0 +1,126 @@
+#articleContainer {
+    display: flex;
+    justify-content: center;
+    height: calc(100vh - 90px);
+    max-height: 100vh;
+    width: 100%;
+}
+.articlebody #postInfo {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.articlebody #postInfo  * {
+    font-family: "Merriweather Sans", sans-serif;
+}
+
+.articlebody *:not(code) { font-family: 'Merriweather', serif; }
+.articlebody img { max-width: 100%; height: auto;}
+.articlebody code:not(.code-toolbar *) {
+    background-color: #828282 !important;
+    border-radius: 3px;
+    padding: 0 1px;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.code-toolbar * {
+    font-size: min(3vw, 15px) !important;
+    font-family: unset;
+    white-space: break-spaces !important;
+}
+
+.articlebody {
+  	width: 950px;
+    max-width: 100%;
+    padding: 15px;
+    height: 100vh;
+}
+
+.articlebody #postExcerpt, .articlebody #id_excerpt  {
+    font-family: 'Merriweather', serif;
+    font-size: min(3vw, 21px);
+    border: 0;
+    background-color: unset;
+    resize: none;
+    width: 100%;
+    font-weight: 100;
+}
+
+.articlebody #postTitle, .articlebody #id_title {
+    font-size: min(5vw, 36px);
+    margin-bottom: 0;
+    margin-top: 10px;
+    border: 0;
+    background-color: unset;
+    resize: none;
+    width: 100%;
+    font-weight: 400;
+}
+
+.articlebody #postAuthor { margin-bottom: 0; font-family: 'Merriweather Sans', sans-serif;}
+.articlebody #meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.articlebody #meta * {
+    color: var(--text-color-dim);
+    font-family: 'Merriweather Sans', sans-serif;
+    font-weight: 100;
+    font-size: 14px;
+}
+
+div#author_block {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+#meta #postAuthor, #meta #postAuthor * {
+    font-size: unset !important;
+    text-decoration: none;
+    font-weight: 100;
+}
+
+#postAuthor #author-username {
+    text-decoration: underline;
+    font-weight: bolder;
+}
+
+.articlebody #postContent {
+    font-family: 'Merriweather', serif;
+    font-size:calc(13px + 0.2vw);
+    font-weight: 400;
+    letter-spacing: 0.003em;
+    word-spacing: 0.05em;
+    line-height: 32px;
+    word-break: break-word;
+}
+
+#toolbar {
+    padding: 15px;
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    gap: 5px;
+    right: 15px;
+    height: 65px;
+}
+
+#toolbar * {
+    font-family: 'Merriweather Sans', sans-serif;
+}
+
+#delete_btn {
+    color: var(--error);
+}
+
+#publish_btn {
+    color: var(--success);
+    background-color: var(--success-bg);
+}
+
+div#more * {
+    font-family: 'Merriweather Sans', sans-serif;
+}

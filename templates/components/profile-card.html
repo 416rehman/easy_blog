@@ -1,0 +1,28 @@
+<div class="profile_card {% if minimal %}minimal{% endif %}">
+    <a href="{% url 'profile_page' username %}">
+        <img class="profile_card_avatar" src="{{ avatar }}" onerror='this.onerror = null; this.src="https://ez.blog.s3.amazonaws.com/media/avatars/default.png"' alt="{{ username }}'s avatar">
+        <div class="about">
+            <div class="name-container">
+                <div>
+                    <span class="username">
+                        @{{username}}
+                    </span>
+                    {% if first_name %}
+                        <br><span class="name">{{first_name | title}} {{last_name | title}}</span>
+                    {% endif %}
+                </div>
+                {% if username != request.user.username %}
+                    {% if following %}
+                        <button class="flat" onclick="follow(event, '{{ username }}')">Unfollow <ion-icon name="remove-circle-outline"></ion-icon></button>
+                    {% else %}
+                        <button class="flat" onclick="follow(event, '{{ username }}')">Follow <ion-icon name="add-circle-outline"></ion-icon></button>
+                    {% endif %}
+                {% endif %}
+            </div>
+            {% if not minimal %}
+               {% if bio %}<p class="bio">{{bio}}</p>{% endif %}
+            {% endif %}
+        </div>
+    </a>
+    <div class="profile-card-banner" style="background: url('{{ banner }}'), url(https://ez.blog.s3.amazonaws.com/media/banners/default.png);background-size: cover;background-position: center;"></div>
+</div>

@@ -18,7 +18,6 @@ STATUS = (
     (1, "Published")
 )
 
-
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='blog_posts')
     title = models.CharField(max_length=200)
@@ -90,8 +89,8 @@ class Profile(models.Model):  # add this class and the following fields
                                validators=[validate_file_size])
     banner = models.ImageField(null=True, blank=True, upload_to=get_banner_path, default='avatars/default.png',
                                validators=[validate_file_size])
-    github = models.URLField(max_length=200, null=True, blank=True)
-    linkedin = models.URLField(max_length=200, null=True, blank=True)
+    github = models.TextField(max_length=39, null=True, blank=True)
+    linkedin = models.TextField(max_length=40, null=True, blank=True)
     website = models.URLField(max_length=200, null=True, blank=True)
 
     def __str__(self):
@@ -142,6 +141,7 @@ class Report(models.Model):
 
         # initial email
         if send_initial_email and self.reporter.email:
+            print('Report created email sent')
             context = {
                 'username': self.reporter,
                 'p1': "We want to thank you for reporting " + ('a post' if self.post else 'a user') +
@@ -188,7 +188,10 @@ def follow_up_post_reports(sender, instance, **kwargs):
 
 @receiver(pre_delete, sender=settings.AUTH_USER_MODEL)
 def follow_up_user_reports(sender, instance, **kwargs):
+    print(instance.username)
+    print(Report.objects.all())
     reports = Report.objects.filter(user__username=instance.username)
+    print(reports)
     reporters = set()
     if reports:
         for r in reports:

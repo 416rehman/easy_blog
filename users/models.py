@@ -16,10 +16,27 @@ from blog.models import Post, Profile
 from users.tokens import account_activation_token
 from django.contrib.auth.models import AbstractUser, UserManager
 
+
+class UsersManager(UserManager):
+    trending = None
+
+    def update_trends(self):
+        print('AUTHORS TRENDS UPDATING')
+        if Post.objects.trending:
+            print('trending_posts {}'.format(bool(Post.objects.trending)))
+            post_authors = set(Post.objects.trending.values('author').values_list('author_id', flat=True))
+            print(post_authors)
+            if post_authors:
+                print("----------------------------")
+                self.trending = get_user_model().objects.filter(pk__in=post_authors).annotate(
+                    total_views=Sum('blog_posts__hourly_views')).order_by('-total_views')
+
+
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     is_email_verified = models.BooleanField(default=False)
     followers = models.ManyToManyField('self', symmetrical=False, blank=True)
+    objects = UsersManager()
 
     class Meta:
         db_table = 'auth_user'

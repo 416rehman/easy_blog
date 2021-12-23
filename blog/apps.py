@@ -7,5 +7,3 @@ class BlogConfig(AppConfig):
 
     def ready(self):
         print('READY')
-        from mysite.jobs import start
-        start()

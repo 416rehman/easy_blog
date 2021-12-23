@@ -2,14 +2,50 @@
 {% load static %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="title" content="Easy Blog | {% block meta_title %}{% endblock %}">
+    <meta name="description" content="{% block meta_description %}{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+
+    <meta charset="utf-8">
+    <!-- HTML Meta Tags -->
     <title>Easy Blog</title>
-    <meta name="description" content="Easy Blog - By Ahmadz.ai"/>
+    <meta name="description" content="Easy Blog - Share your thoughts with ease, freedom and simplicity.">
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Easy Blog">
+    <meta itemprop="description" content="Easy Blog - Share your thoughts with ease, freedom and simplicity.">
+    <meta itemprop="image" content="http://i.imgur.com/RImMfPo.png">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://blog.ahmadz.ai">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Easy Blog">
+    <meta property="og:description" content="Easy Blog - Share your thoughts with ease, freedom and simplicity.">
+    <meta property="og:image" content="http://i.imgur.com/RImMfPo.png">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Easy Blog">
+    <meta name="twitter:description" content="Easy Blog - Share your thoughts with ease, freedom and simplicity.">
+    <meta name="twitter:image" content="http://i.imgur.com/RImMfPo.png">
+
+    <meta name="keywords" content="blog, blogging, share, thoughts, world, freedom, simplicity, easy, rehman, hayaturehman, ahmadzai">
+    <meta name="author" content="Hayaturehman Ahmadzai">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="1 day">
+    <meta name="language" content="English">
+    <meta name="copyright" content="Hayaturehman Ahmadzai ( Rehman )">
+    <meta name="rating" content="general">
+    <meta name="distribution" content="global">
+    <meta name="theme-color" content="#000000">
+
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+
     <link rel="stylesheet" type="text/css" href="{% static 'css/themes.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/messages.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/prism.css' %}">
+
 
     {% block styles %}
     {% endblock %}

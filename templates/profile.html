@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load template_tags %}
+
 {% block content %}
     <div id="profile" class="center">
         <div id="profile-container">
@@ -28,16 +29,18 @@
                                         </button>
                                     </a>
                                 {% else %}
-                                    <button class="flat"
-                                            onclick="follow(event, '{{ requested_profile.username }}')">
-                                        {% if following %}
-                                            Unfollow
-                                            <ion-icon name="remove-circle-outline"></ion-icon>
-                                        {% else %}
-                                            Follow
-                                            <ion-icon name="add-circle-outline"></ion-icon>
-                                        {% endif %}
-                                    </button>
+                                    {% if request.user.is_authenticated %}
+                                        <button class="flat" onclick="follow(event, '{{ requested_profile.username }}')">
+                                            {% if following %}
+                                                Unfollow
+                                                <ion-icon name="remove-circle-outline"></ion-icon>
+                                            {% else %}
+                                                Follow
+                                                <ion-icon name="add-circle-outline"></ion-icon>
+                                            {% endif %}
+                                        </button>
+                                    {% endif %}
+
                                     <a href="report">
                                         <button class="flat mini">Report
                                             <ion-icon name="flag-outline"></ion-icon>
@@ -88,3 +91,16 @@
 {% block styles %}
     <link rel="stylesheet" href="{% static 'css/user.css' %}">
 {% endblock %}
+
+{% if requested_profile %}
+    {% block meta_title %}
+        @{{ requested_profile.username.strip }} - {{ requested_profile.first_name.strip }} {{ requested_profile.last_name.strip }}
+    {% endblock %}
+    {% block meta_description %}
+        {{ requested_profile.profile.bio.strip }}
+    {% endblock %}
+    {% block meta_keywords %}
+        {{ requested_profile.username.strip }}, {{ requested_profile.first_name.strip }}, {{ requested_profile.last_name.strip }},
+        {{ requested_profile.profile.bio.strip }}
+    {% endblock %}
+{% endif %}

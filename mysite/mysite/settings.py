@@ -90,7 +90,7 @@ SESSION_COOKIE_SAMESITE = None
 CSP_UPGRADE_INSECURE_REQUESTS = not DEBUG
 CSP_BASE_URI = ["'self'"]
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_IMG_SRC = ["'self'", "https: data:", "blob:"]
+CSP_IMG_SRC = ["'self'", "https: data:", "blob:", "https:"]
 CSP_FRAME_SRC = ["'self'", "https:", "data:"]
 CSP_SCRIPT_SRC = [
     "'self'",

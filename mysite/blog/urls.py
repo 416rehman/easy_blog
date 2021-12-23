@@ -6,7 +6,6 @@ urlpatterns = [
     path('authors/', views.TrendingAuthorsView, name='home_authors'),
     path('write/', views.NewPostView, name='new_post'),
     path('create/', views.CreatePostView, name='create_post'),
-    # path('search/', views.SearchView.as_view(), name='search'),
     path('<slug:slug>/', views.PostDetailView.as_view(), name='post_detail'),
     path('<slug:slug>/edit', views.EditPostView, name='edit_post'),
     path('<slug:slug>/publish', views.PublishPostView, name='publish_post'),

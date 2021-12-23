@@ -25,9 +25,9 @@ class ProfileForm(forms.ModelForm):
             'banner': forms.FileInput(attrs={'aria-label': 'Banner'}),
             'bio': Textarea(attrs={'aria-label': 'bio', 'cols': 20, 'rows': 6, 'oninput': "auto_grow(this)",
                                    'onkeypress': 'preventLineBreak(event)', 'placeholder': 'Bio'}),
-            'github': forms.TextInput(attrs={'aria-label': 'Github URL', 'placeholder': 'https://github.com/...'}),
-            'linkedin': forms.TextInput(attrs={'aria-label': 'LinkedIn URL', 'placeholder': 'https://linkedin.com/in/...'}),
-            'website': forms.TextInput(attrs={'aria-label': 'Website URL', 'placeholder': 'https://yourwebsite.com/'})
+            'github': forms.TextInput(attrs={'aria-label': 'Github URL', 'placeholder': 'username'}),
+            'linkedin': forms.TextInput(attrs={'aria-label': 'LinkedIn URL', 'placeholder': 'username'}),
+            'website': forms.TextInput(attrs={'aria-label': 'Website URL', 'placeholder': 'www.yourwebsite.com'})
         }
 
 

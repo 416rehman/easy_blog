@@ -48,15 +48,15 @@
                         </div>
                         <div id="socials">
                             {% if requested_profile.profile.website %}
-                                <a href="{{ requested_profile.profile.website }}/">Website</a>
+                                <a href="{{ requested_profile.profile.website }}/" target="_blank">Website</a>
                             {% endif %}
                             •
                             {% if requested_profile.profile.linkedin %}
-                                <a href="{{ requested_profile.profile.linkedin }}">LinkedIn</a>
+                                <a href="https://LinkedIn.com/in/{{ requested_profile.profile.linkedin }}" target="_blank">LinkedIn</a>
                             {% endif %}
                             •
                             {% if requested_profile.profile.github %}
-                                <a href="{{ requested_profile.profile.github }}">Github</a>
+                                <a href="https://github.com/{{ requested_profile.profile.github }}" target="_blank">Github</a>
                             {% endif %}
                         </div>
                         <div id="followers">

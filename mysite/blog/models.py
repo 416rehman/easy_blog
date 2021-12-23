@@ -89,8 +89,8 @@ class Profile(models.Model):  # add this class and the following fields
                                validators=[validate_file_size])
     banner = models.ImageField(null=True, blank=True, upload_to=get_banner_path, default='avatars/default.png',
                                validators=[validate_file_size])
-    github = models.URLField(max_length=200, null=True, blank=True)
-    linkedin = models.URLField(max_length=200, null=True, blank=True)
+    github = models.TextField(max_length=39, null=True, blank=True)
+    linkedin = models.TextField(max_length=40, null=True, blank=True)
     website = models.URLField(max_length=200, null=True, blank=True)
 
     def __str__(self):

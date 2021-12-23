@@ -10,11 +10,14 @@ from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
 from django.views.generic import UpdateView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 from blog.forms import ReportForm
 from blog.models import Post
 from users.forms import UserForm, ProfileForm, SignupForm
 from users.tokens import account_activation_token
+from blog.serializers import PostSerializer
 
 
 class ActivateAccountView(View):
@@ -207,3 +210,11 @@ def UserFollowingView(request, username):
     except EmptyPage:
         following = paginator.page(paginator.num_pages)
     return render(request, 'following.html', {'users': following, 'target_user': target_user})
+
+
+# create an api to get the user's posts
+@api_view(['GET'])
+def UserPostsView(request, username):
+    posts = Post.objects.filter(author__username=username, status=1).all()
+    serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data)

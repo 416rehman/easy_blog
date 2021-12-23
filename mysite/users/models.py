@@ -1,5 +1,4 @@
 # Create your models here.
-from background_task import background
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db import models
@@ -21,8 +20,8 @@ from django.contrib.auth.models import AbstractUser, UserManager
 class UsersManager(UserManager):
     trending = None
 
-    @background(schedule=5)
     def update_trends(self):
+        print('AUTHORS TRENDS UPDATING')
         if Post.objects.trending:
             print('trending_posts {}'.format(bool(Post.objects.trending)))
             post_authors = set(Post.objects.trending.values('author').values_list('author_id', flat=True))

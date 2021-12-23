@@ -14,27 +14,34 @@ from django.apps import apps
 
 def TrendingPostsView(request):
     queryset = q_filter = None
-    if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
-        queryset = Post.objects.trending
-        q_filter = 'trending'
+    # if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
+    #     queryset = Post.objects.trending
+    #     q_filter = 'trending'
+    #
+    # if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
+    #     queryset = Post.objects.filter(status=1)
+    #     q_filter = 'new'
 
-    if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
-        queryset = Post.objects.filter(status=1)
-        q_filter = 'new'
+    queryset = Post.objects.filter(status=1)
+    q_filter = 'new'
 
     return render(request, 'trending_posts.html', {'posts': queryset, 'filter': q_filter})
 
 
 def TrendingAuthorsView(request):
     queryset = q_filter = None
-    if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
-        queryset = get_user_model().objects.trending
-        print(queryset)
-        q_filter = 'trending'
+    # if not request.GET.get('filter') or request.GET.get('filter') == 'trending':
+    #     queryset = get_user_model().objects.trending
+    #     print(queryset)
+    #     q_filter = 'trending'
+    #
+    # if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
+    #     queryset = get_user_model().objects.filter(is_active=True).order_by('-date_joined')
+    #     q_filter = 'new'
 
-    if (not queryset and not request.GET.get('filter') == 'trending') or request.GET.get('filter') == 'new':
-        queryset = get_user_model().objects.filter(is_active=True).order_by('-date_joined')
-        q_filter = 'new'
+    queryset = get_user_model().objects.filter(is_active=True).order_by('-date_joined')
+    q_filter = 'new'
+
     return render(request, 'trending_authors.html', {'authors': queryset, 'filter': q_filter})
 
 

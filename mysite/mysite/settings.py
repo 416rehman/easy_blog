@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tinymce',
-    'background_task',
     'users',
     'blog',
     'hitcount',
@@ -357,5 +356,5 @@ ELASTICSEARCH_INDEX_NAMES = {
     'search.documents.user': 'user',
 }
 
-# USERS
+# Custom USERS model
 AUTH_USER_MODEL = 'users.User'

@@ -18,9 +18,9 @@ def profile_card(request, user=None, minimal=False, model_object=True):
             'last_name': user.last_name,
             'username': user.username,
             'bio': user.profile.bio,
-            'avatar': 'https://s3.amazonaws.com/' + settings.AWS_STORAGE_BUCKET_NAME + '/' + settings.AWS_PUBLIC_MEDIA_LOCATION + '/' + str(
+            'avatar': 'http://s3.amazonaws.com/' + settings.AWS_STORAGE_BUCKET_NAME + '/' + settings.AWS_PUBLIC_MEDIA_LOCATION + '/' + str(
                 user.profile.avatar),
-            'banner': 'https://s3.amazonaws.com/' + settings.AWS_STORAGE_BUCKET_NAME + '/' + settings.AWS_PUBLIC_MEDIA_LOCATION + '/' + str(
+            'banner': 'http://s3.amazonaws.com/' + settings.AWS_STORAGE_BUCKET_NAME + '/' + settings.AWS_PUBLIC_MEDIA_LOCATION + '/' + str(
                 user.profile.banner),
             'following': user.followers.filter(username=request.user.username).exists() if request.user.is_authenticated else False,
             'follows_back': request.user.is_followed_by(user.username) if request.user.is_authenticated else False,

@@ -90,7 +90,7 @@ SESSION_COOKIE_SAMESITE = None
 CSP_UPGRADE_INSECURE_REQUESTS = not DEBUG
 CSP_BASE_URI = ["'self'"]
 CSP_DEFAULT_SRC = ("'self'",)
-CSP_IMG_SRC = ["'self'", "https: data:", "blob:", "https:"]
+CSP_IMG_SRC = ["'self'", "https: data:", "blob:", "https:", "http:"]
 CSP_FRAME_SRC = ["'self'", "https:", "data:"]
 CSP_SCRIPT_SRC = [
     "'self'",
@@ -328,7 +328,6 @@ AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 AWS_PUBLIC_MEDIA_LOCATION = 'media'
 
 DEFAULT_FILE_STORAGE = 'mysite.storage_backends.MediaStorage'

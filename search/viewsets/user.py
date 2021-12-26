@@ -99,7 +99,7 @@ class UserDocumentViewSet(DocumentViewSet):
 
 
 class UserCustomDocumentViewSet(UserDocumentViewSet):
-    page_size = 1
+    page_size = 10
 
     @classonlymethod
     def as_view(cls, actions=None, **initkwargs):

@@ -15,6 +15,7 @@ from rest_framework.response import Response
 
 from blog.forms import ReportForm
 from blog.models import Post
+from mysite import settings
 from users.forms import UserForm, ProfileForm, SignupForm
 from users.tokens import account_activation_token
 from blog.serializers import PostSerializer
@@ -125,9 +126,14 @@ def SignUpView(request):
         form = SignupForm(request.POST or None)
         if form.is_valid():
             form.save()
+            # Check that the username is not restricted
 
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
+            if form.cleaned_data.get('username') in settings.RESTRICTED_USERNAMES:
+                messages.add_message(request, messages.ERROR, 'Username is restricted')
+                return redirect('signup')
+
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.add_message(request, messages.SUCCESS, 'Welcome to Easy Blog!')

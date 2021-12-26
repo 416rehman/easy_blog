@@ -14,7 +14,7 @@
     font-family: "Merriweather Sans", sans-serif;
 }
 
-.articlebody *:not(code) { font-family: 'Merriweather', serif; }
+.articlebody *:not(code) { font-family: 'Tinos', serif; }
 .articlebody img { max-width: 100%; height: auto;}
 .articlebody code:not(.code-toolbar *) {
     background-color: #828282 !important;
@@ -38,8 +38,10 @@
 }
 
 .articlebody #postExcerpt, .articlebody #id_excerpt  {
-    font-family: 'Merriweather', serif;
-    font-size: min(3vw, 21px);
+    font-family: 'Tinos', serif;
+    font-size: min(6vw, 21px);
+    margin-top: 5px;
+    color: var(--text-color-dim);
     border: 0;
     background-color: unset;
     resize: none;
@@ -48,14 +50,14 @@
 }
 
 .articlebody #postTitle, .articlebody #id_title {
-    font-size: min(5vw, 36px);
+    font-size: min(8vw, 36px);
     margin-bottom: 0;
     margin-top: 10px;
     border: 0;
     background-color: unset;
     resize: none;
     width: 100%;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 .articlebody #postAuthor { margin-bottom: 0; font-family: 'Merriweather Sans', sans-serif;}
@@ -89,8 +91,8 @@ div#author_block {
 }
 
 .articlebody #postContent {
-    font-family: 'Merriweather', serif;
-    font-size:calc(13px + 0.2vw);
+    font-family: 'Tinos', serif;
+    font-size:calc(18px + 0.2vw);
     font-weight: 400;
     letter-spacing: 0.003em;
     word-spacing: 0.05em;

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load template_tags %}
 {% block styles %}
     {{ form.media }}
 <link rel="stylesheet" href="{% static 'css/edit_profile.css' %}">
@@ -61,3 +62,7 @@
 </div>
 
 {% endblock %}
+
+{% block meta %}
+    {% meta_tags title="Editing @"|add:userForm.username|add:"'s Profile" description="Check out "|add:userForm.username|add:"'s profile on Easy Blog" %}
+{% endblock meta %}

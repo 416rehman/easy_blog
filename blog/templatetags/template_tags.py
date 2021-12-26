@@ -68,3 +68,13 @@ def replace(value, args=","):
         return value.replace(old, new)
     except ValueError:
         return value
+
+
+@register.inclusion_tag('components/meta-tags.html')
+def meta_tags(title="", description="Share your thoughts with ease, freedom and simplicity", keywords="blog, easyblog, blogging, share, thoughts, world, 'cms', freedom, simplicity, easy, rehman, hayaturehman, ahmadzai", image="http://i.imgur.com/RImMfPo.png"):
+    return {
+        'title': title + ' | Easy Blog',
+        'description': description,
+        'keywords': keywords,
+        'image': image,
+    }

@@ -128,3 +128,7 @@
         }
     </script>
 {% endblock %}
+
+{% block meta %}
+    {% meta_tags title=post.title description=post.excerpt keywords=post.tags %}
+{% endblock meta %}

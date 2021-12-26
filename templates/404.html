@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load template_tags %}
 
 {% block title %}Page Not Found{% endblock %}
 {% block content %}
@@ -12,3 +13,6 @@
 </div>
 
 {% endblock %}
+{% block meta %}
+    {% meta_tags title="Page Not Found" %}
+{% endblock meta %}

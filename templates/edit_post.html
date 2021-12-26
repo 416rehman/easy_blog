@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load template_tags %}
 
 {% block title %}Edit Post{% endblock %}
 {% block content %}
@@ -47,6 +48,28 @@
     <link rel="stylesheet" href="{% static 'css/edit_post.css' %}">
     <link rel="stylesheet" href="{% static 'css/post_detail.css' %}">
 {% endblock %}
+
 {% block scripts %}
+    <script>
+        let editor = frames['id_content_ifr'];
+        if (!editor) {
+            setTimeout(() => {
+                editor = frames['id_content_ifr'].contentDocument.body;
+                applyTheme(editor)
+            }, 1000)
+        } else {
+            applyTheme(editor.contentDocument.body)
+        }
+    </script>
     <script src={% static "js/featured_image.js" %}></script>
 {% endblock %}
+
+{% block meta %}
+
+    {% if newPost %}
+        {% meta_tags title="Write a Post" description="Create a new post" %}
+    {% else %}
+        {% meta_tags title=form.title.value|title description=form.excerpt.value %}
+    {% endif %}
+
+{% endblock meta %}

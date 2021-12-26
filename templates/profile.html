@@ -93,14 +93,14 @@
 {% endblock %}
 
 {% if requested_profile %}
-    {% block meta_title %}
-        @{{ requested_profile.username.strip }} - {{ requested_profile.first_name.strip }} {{ requested_profile.last_name.strip }}
-    {% endblock %}
-    {% block meta_description %}
-        {{ requested_profile.profile.bio.strip }}
-    {% endblock %}
-    {% block meta_keywords %}
-        {{ requested_profile.username.strip }}, {{ requested_profile.first_name.strip }}, {{ requested_profile.last_name.strip }},
-        {{ requested_profile.profile.bio.strip }}
-    {% endblock %}
+    {% block meta %}
+        {% if requested_profile.first_name or requested_profile.last_name %}
+            {% meta_tags title=requested_profile.first_name|add:" "|add:requested_profile.last_name|add:" (@"|add:requested_profile.username|add:")"|title description=requested_profile.profile.bio|title %}
+        {% else %}
+            {% meta_tags title="@"|add:requested_profile.username|title description=requested_profile.profile.bio|title %}
+        {% endif %}
+
+    {% endblock meta %}
 {% endif %}
+
+

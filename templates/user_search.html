@@ -111,3 +111,7 @@
 {% block styles %}
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
 {% endblock %}
+
+{% block meta %}
+    {% meta_tags title=post.title description=post.excerpt keywords=post.tags %}
+{% endblock meta %}

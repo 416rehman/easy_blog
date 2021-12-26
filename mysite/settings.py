@@ -237,8 +237,8 @@ TINYMCE_DEFAULT_CONFIG = {
     "toolbar": False,
     "height": 500,
     "placeholder": "Tell your story...",
-    "content_style": "@import url('https://fonts.googleapis.com/css2?family=Merriweather&display=swap'); body { "
-                     "font-family: 'Merriweather', serif; font-size: min(4vw, 15px); color: var(--text-color); background-color: --var(primary-color);}"
+    "content_style": "@import url('https://fonts.googleapis.com/css2?family=Tinos&display=swap'); body { "
+                     "font-family: 'Tinos', serif; font-size: min(4vw, 15px); color: var(--text-color); background-color: --var(primary-color);}"
                      "code {"
                      "background-color: #828282 !important;"
                      "border-radius: 2px;"
@@ -248,7 +248,7 @@ TINYMCE_DEFAULT_CONFIG = {
                      "display: block;"
                      "}"
                      "p {"
-                     "font-family: 'Merriweather', serif;"
+                     "font-family: 'Tinos', serif;"
                      "font-size:calc(13px + 0.4vw);"
                      "font-weight: 400;"
                      "letter-spacing: 0.003em;"

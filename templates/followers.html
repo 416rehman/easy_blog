@@ -87,3 +87,7 @@
     <link rel="stylesheet" href="{% static 'css/user.css' %}">
     <link rel="stylesheet" href="{% static 'css/components/profile-card.css' %}">
 {% endblock %}
+
+{% block meta %}
+    {% meta_tags title=target_user.username|add:"'s Followers"|title description="View followers of @"|add:target_user.username|add:" on Easy Blog"%}
+{% endblock meta %}

@@ -89,21 +89,7 @@
 {% endblock %}
 
 {% if post %}
-    {% block meta_description %}
-        {{ post.excerpt.strip }}
-    {% endblock %}
-
-    {% block meta_title %}
-        {{ post.title.strip }}
-    {% endblock %}
-
-    {% block meta_keywords %}
-        {% if post.tags %}
-            {% for tag in post.tags %}
-                {% if tag %}
-                    {{ tag.strip }}{% if not forloop.last %},{% endif %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    {% endblock %}
+    {% block meta %}
+        {% meta_tags title=post.title description=post.excerpt keywords=post.tags %}
+    {% endblock meta %}
 {% endif %}

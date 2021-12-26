@@ -249,7 +249,7 @@ TINYMCE_DEFAULT_CONFIG = {
                      "}"
                      "p {"
                      "font-family: 'Tinos', serif;"
-                     "font-size:calc(13px + 0.4vw);"
+                     "font-size:calc(18px + 0.2vw);"
                      "font-weight: 400;"
                      "letter-spacing: 0.003em;"
                      "word-spacing: 0.05em;"

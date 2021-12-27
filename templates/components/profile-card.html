@@ -1,6 +1,6 @@
 <div class="profile_card {% if minimal %}minimal{% endif %}">
     <a href="{% url 'profile_page' username %}">
-        <img class="profile_card_avatar" src="{{ avatar }}" onerror='this.onerror = null; this.src="http://s3.amazonaws.com/ez.blog/media/avatars/default.png?error=1"' alt="{{ username }}'s avatar">
+        <img class="profile_card_avatar" src="{{ avatar }}" alt="{{ username }}'s avatar">
         <div class="about">
             <div class="name-container">
                 <div>

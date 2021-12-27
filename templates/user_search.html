@@ -113,5 +113,5 @@
 {% endblock %}
 
 {% block meta %}
-    {% meta_tags title=post.title description=post.excerpt keywords=post.tags %}
+    {% meta_tags title="Search"|add:request.GET.search description="Search Easy Blog" %}
 {% endblock meta %}

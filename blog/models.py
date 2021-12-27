@@ -85,9 +85,9 @@ def validate_file_size(value):
 class Profile(models.Model):  # add this class and the following fields
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(max_length=250, null=True, blank=True)
-    avatar = models.ImageField(null=True, blank=True, upload_to=get_avatar_path, default='avatars/default.png',
+    avatar = models.ImageField(upload_to=get_avatar_path, default='avatars/default.png',
                                validators=[validate_file_size])
-    banner = models.ImageField(null=True, blank=True, upload_to=get_banner_path, default='avatars/default.png',
+    banner = models.ImageField(upload_to=get_banner_path, default='banners/default.png',
                                validators=[validate_file_size])
     github = models.TextField(max_length=39, null=True, blank=True)
     linkedin = models.TextField(max_length=40, null=True, blank=True)

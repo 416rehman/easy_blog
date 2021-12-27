@@ -151,6 +151,7 @@ class PostCustomDocumentViewSet(PostDocumentViewSet):
         # Field-based search
         field = request.GET.get('in_field', 0)
         query = request.GET.get('search', 0)
+
         if field and query:
             if field == 'all':
                 request.GET['search'] = query.split(':')[1] if ':' in query else query

@@ -33,8 +33,8 @@
         </div>
         <hr>
 
-        <h1 id="postTitle">{% block title %} {{ post.title | title }} {% endblock title %}</h1>
-        <div id="postExcerpt">{% block excerpt %} {{ post.excerpt | title }} {% endblock excerpt %}</div>
+        <h1 id="postTitle">{% block title %} {{ post.title |capfirst }} {% endblock title %}</h1>
+        <div id="postExcerpt">{% block excerpt %} {{ post.excerpt |capfirst }} {% endblock excerpt %}</div>
         <br>
         <div id="meta">
             <div id="author_block">

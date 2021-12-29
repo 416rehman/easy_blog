@@ -25,10 +25,12 @@ body {
     transition: all 0.5s ease;
     margin: 0;
 }
+
 a {
-    text-decoration: none;
-    font-weight: bolder;
+    text-decoration: underline;
+    text-decoration-style: dotted;
 }
+
 a:hover {
     color: var(--text-color-dim);
     text-decoration: underline;
@@ -236,10 +238,6 @@ a.postcard{text-decoration: none}
 
 .copy-to-clipboard-button:hover {
     cursor: pointer !important;
-}
-
-a {
-    text-decoration: underline;
 }
 
 blockquote {

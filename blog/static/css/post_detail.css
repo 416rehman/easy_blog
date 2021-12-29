@@ -14,14 +14,14 @@
     font-family: "Merriweather Sans", sans-serif;
 }
 
-.articlebody *:not(code) { font-family: 'Tinos', serif; }
+.articlebody *:not(code, button) { font-family: 'Tinos', serif; }
 .articlebody img { max-width: 100%; height: auto;}
 .articlebody code:not(.code-toolbar *) {
-    background-color: #828282 !important;
+    background-color: #82828252 !important;
     border-radius: 3px;
     padding: 0 1px;
-    color: var(--primary-color);
-    font-weight: 600;
+    color: var(--text-color);
+    font-size: calc(15px + 0.2vw);
 }
 
 .code-toolbar * {

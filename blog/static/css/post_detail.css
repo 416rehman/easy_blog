@@ -146,19 +146,27 @@ div#more * {
     overflow-y: hidden;
     white-space: nowrap;
     user-select: none;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-height: 2px;
+
     scroll-snap-type: x mandatory;
     display: flex;
     flex-wrap: nowrap;
     align-content: center;
     padding: 5px;
+    gap: 5px;
+}
+.tags::-webkit-scrollbar {
+    height: 2px;
+
+}
+.tags:hover {
+    scrollbar-height: 10px;
+}
+.tags:hover::-webkit-scrollbar {
+    height: 10px;
 }
 .tags a {
     scroll-snap-align: start;
-}
-.tags::-webkit-scrollbar {
-    display: none;
 }
 
 @media only screen and (max-width: 600px){

@@ -354,6 +354,7 @@ span.tag:not(code *, pre *) {
     border-radius: 15px;
     color: #93aac5;
     font-weight: 100;
+    font-size: 1rem;
 }
 code, code * {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;

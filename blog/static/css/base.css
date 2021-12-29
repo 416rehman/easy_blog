@@ -406,6 +406,22 @@ iframe {
     border-radius: var(--border-radius);
 }
 
+.buttoned-style {
+    background-color: var(--tertiary-color);
+    color: var(--text-color-dim);
+    border-color: var(--button-border);
+    border: 1px solid var(--button-border);
+    border-radius: var(--border-radius);
+    padding: 7.5px 15px;
+    box-shadow: 0 3px 0px 0 rgb(0 0 0 / 20%), 0 8px 5px 0 rgb(0 0 0 / 20%);
+    transition: background-color 0.5s ease;
+}
+.buttoned-style:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 white;
+    outline: none;
+}
+
 @media only screen and (max-width: 600px){
     #navLinks {
         display: flex;

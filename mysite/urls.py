@@ -16,9 +16,18 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include, re_path
 from django.contrib.auth import views as auth_views
+
+from mysite.sitemap import PostSitemap, UserSitemap, StaticSitemap
 from search.urls import urlpatterns as search_index_urls
+
+sitemaps = {
+    'static': StaticSitemap,
+    'users': UserSitemap,
+    'posts': PostSitemap,
+}
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
@@ -36,5 +45,6 @@ urlpatterns = [
                   re_path(r'^search/', include(search_index_urls)),
                   path('', include('users.urls')),
                   path('', include('blog.urls')),
+                  path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap')
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL,
                                                                                          document_root=settings.STATIC_ROOT)

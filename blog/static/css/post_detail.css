@@ -140,3 +140,9 @@ div#author_block {
 div#more * {
     font-family: 'Merriweather Sans', sans-serif;
 }
+
+@media only screen and (max-width: 600px){
+    #toolbar {
+        justify-content: space-between;
+    }
+}

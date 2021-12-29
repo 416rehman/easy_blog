@@ -6,6 +6,7 @@ from django.db.models import Sum
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.template.loader import render_to_string
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.html import strip_tags
 from django.utils.http import urlsafe_base64_encode
@@ -37,6 +38,7 @@ class User(AbstractUser):
     is_email_verified = models.BooleanField(default=False)
     followers = models.ManyToManyField('self', symmetrical=False, blank=True)
     objects = UsersManager()
+    last_activation_email_sent = models.DateTimeField(null=True, default=timezone.now)
 
     class Meta:
         db_table = 'auth_user'
@@ -59,11 +61,17 @@ class User(AbstractUser):
         return user_to_unfollow.followers.remove(self)
 
     def save(self, *args, **kwargs):
-        if not self.is_email_verified and self.email:
-            self.send_activation_email()
+        if self.pk:
+            if self.email != self.__class__.objects.get(pk=self.pk).email:
+                self.is_email_verified = False
+        else:
+            if not self.is_email_verified and self.email:
+                self.send_activation_email()
+
         super(User, self).save(*args, **kwargs)
 
     def send_activation_email(self):
+        print('SENDING ACTIVATION EMAIL')
         mail_subject = 'Verify your email'
         message = render_to_string('email_templates/account_activation_email.html', {
             'user': self,
@@ -72,8 +80,14 @@ class User(AbstractUser):
             'default_domain': settings.DEFAULT_DOMAIN
         })
         to_email = self.email
-        send_mail(mail_subject, strip_tags(message), 'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>', [to_email],
-                  html_message=message)
+
+        if send_mail(mail_subject, strip_tags(message), 'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>', [to_email],
+                  html_message=message, fail_silently=False):
+            self.last_activation_email_sent = timezone.now()
+            self.save()
+            print('ACTIVATION EMAIL SENT TO {}'.format(to_email))
+        else:
+            print('ACTIVATION EMAIL NOT SENT TO {}'.format(to_email))
 
 
 @receiver(post_save, sender=get_user_model())  # add this

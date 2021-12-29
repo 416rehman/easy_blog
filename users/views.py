@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
+from django.utils import timezone
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
 from django.views import View
@@ -164,8 +165,20 @@ class InactiveUserView(UpdateView):
             return redirect('home')
 
     def post(self, request, *args, **kwargs):
-        messages.add_message(request, messages.SUCCESS, 'An email has been sent. Please check your email.')
-        return super().get(request, *args, **kwargs)
+        if not request.user.is_authenticated:
+            return redirect('home')
+
+        response = super().post(request, *args, **kwargs)
+        errors = super().get_context_data().get('form').errors
+
+        if not errors:
+            if not request.user.last_activation_email_sent or ((timezone.now() - request.user.last_activation_email_sent).seconds > 5):
+                request.user.send_activation_email()
+                messages.add_message(request, messages.SUCCESS, 'An email has been sent. Please check your email.')
+            else:
+                messages.add_message(request, messages.ERROR, 'Please wait 5 seconds before sending another activation email.')
+
+        return response
 
 
 @login_required()

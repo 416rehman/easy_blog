@@ -5,7 +5,9 @@
             <div class="postcard-infobar">
                 <p id="postAuthor">@{{ post.author.username }}</p>
                 {% if post.status == 0 %}
-                    <div class="postcard-tag alert-error">Unpublished</div>
+                    <div class="postcard-tag alert-error" title="Unpublished posts are not visible to the public and only you can access them" >Unpublished</div>
+                {% elif post.status == 2 %}
+                    <div class="postcard-tag alert-error" title="Unlisted posts are not visible to the public and only accessible via the URL" >Unlisted</div>
                 {% endif %}
             </div>
             <h3 id="postTitle">{{ post.title |capfirst }}</h3>

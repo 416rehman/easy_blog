@@ -33,6 +33,11 @@
     border-color: #ebcccc;
     color: var(--error);
 }
+.postcard-tag {
+    padding: 0 5px;
+    border-radius: var(--border-radius);
+    margin-right: 10px;
+}
 
 .alert-success {
     background-color: var(--success-bg);

@@ -15,7 +15,8 @@ from django.core.exceptions import ValidationError
 
 STATUS = (
     (0, "Draft"),
-    (1, "Published")
+    (1, "Published"),
+    (2, "Unlisted"),
 )
 
 class Post(models.Model):
@@ -243,4 +244,8 @@ def unique_slugify(instance, slug):
     unique_slug = slug
     while model.objects.filter(slug=unique_slug).exists():
         unique_slug = slug + get_random_string(length=4)
+
+    # make sure the slug is not in the reserved list
+    if unique_slug in settings.RESERVED_KEYWORDS:
+        unique_slug = get_random_string(length=4) + unique_slug + get_random_string(length=4)
     return unique_slug

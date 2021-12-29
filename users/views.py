@@ -128,7 +128,7 @@ def SignUpView(request):
             # Check that the username is not restricted
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
-            if form.cleaned_data.get('username') in settings.RESTRICTED_USERNAMES:
+            if form.cleaned_data.get('username') in settings.RESERVED_KEYWORDS:
                 messages.add_message(request, messages.ERROR, 'Username is restricted')
                 return redirect('signup')
 

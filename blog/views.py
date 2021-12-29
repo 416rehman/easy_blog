@@ -55,9 +55,11 @@ class PostDetailView(HitCountDetailView):
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data(**kwargs)
 
-        if context['post'].author != self.request.user and not context['post'].status == 1:
+        # Accessing an unpublished post should not be possible
+        if context['post'].author != self.request.user and context['post'].status == 0:
             messages.error(self.request, 'Invalid Post.')
             return None
+
         return context
 
 
@@ -140,6 +142,18 @@ def UnpublishPostView(request, slug):
         return redirect('post_detail', slug=slug)
 
     messages.success(request, 'An error occured while unpublishing the post.')
+    return render(request, 'index.html')
+
+@login_required
+def UnlistPostView(request, slug):
+    instance = get_object_or_404(Post, slug=slug)
+    if instance.author == request.user:
+        instance.status = 2
+        instance.save()
+        messages.success(request, 'Post unlisted (accessible only via the URL)')
+        return redirect('post_detail', slug=slug)
+
+    messages.success(request, 'An error occured while unlisting the post.')
     return render(request, 'index.html')
 
 

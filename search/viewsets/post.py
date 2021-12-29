@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect, render
 from django.urls import resolve
 from django.utils.decorators import classonlymethod
+from elasticsearch_dsl import Q
 from rest_framework.decorators import action
 
 from django_elasticsearch_dsl_drf.constants import SUGGESTER_COMPLETION, LOOKUP_FILTER_RANGE, LOOKUP_QUERY_GT, \
@@ -160,6 +161,10 @@ class PostCustomDocumentViewSet(PostDocumentViewSet):
                                                                  query=query.split(':')[1] if ':' in query else query)
 
         queryset = self.filter_queryset(self.get_queryset())
+
+        # Get only published posts
+        queryset = queryset.filter(Q("match", status=1))
+
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

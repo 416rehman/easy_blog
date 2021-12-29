@@ -10,6 +10,7 @@ urlpatterns = [
     path('<slug:slug>/edit', views.EditPostView, name='edit_post'),
     path('<slug:slug>/publish', views.PublishPostView, name='publish_post'),
     path('<slug:slug>/unpublish', views.UnpublishPostView, name='unpublish_post'),
+    path('<slug:slug>/unlist', views.UnlistPostView, name='unlist_post'),
     path('<slug:slug>/delete', views.DeletePostView, name='delete_post'),
     path('<slug:slug>/report', views.ReportPostView, name='report_post'),
 ]

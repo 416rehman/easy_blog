@@ -10,6 +10,7 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
 .articlebody #postInfo * {
@@ -139,6 +140,25 @@ div#author_block {
 
 div#more * {
     font-family: 'Merriweather Sans', sans-serif;
+}
+.tags {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    user-select: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    padding: 5px;
+}
+.tags a {
+    scroll-snap-align: start;
+}
+.tags::-webkit-scrollbar {
+    display: none;
 }
 
 @media only screen and (max-width: 600px){

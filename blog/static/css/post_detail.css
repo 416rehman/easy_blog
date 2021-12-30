@@ -157,13 +157,12 @@ div#more * {
 }
 .tags::-webkit-scrollbar {
     height: 2px;
-
 }
 .tags:hover {
-    scrollbar-height: 10px;
+    scrollbar-height: 3px;
 }
 .tags:hover::-webkit-scrollbar {
-    height: 10px;
+    height: 3px;
 }
 .tags a {
     scroll-snap-align: start;

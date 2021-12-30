@@ -75,7 +75,6 @@ a.postcard{text-decoration: none}
 }
 
 .postcard #postTitle {
-    font-size: min(4vw, 22px);
     margin: 0 0 5px;
     overflow: hidden;
     text-overflow: ellipsis;

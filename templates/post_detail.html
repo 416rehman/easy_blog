@@ -91,7 +91,7 @@
                     </div>
                     <div>
             <span>{% if post.created_on != post.updated_on %}
-                Created{% endif %} {{ post.created_on  | date:"M d Y" }}</span>
+                Created{% endif %} <time datetime="{{ post.created_on  | date:"M d Y" }}" >{{ post.created_on  | date:"M d Y" }}</time></span>
                         {% if post.created_on != post.updated_on %}
                             <br><span>Updated {{ post.updated_on | date:"M d Y" }}</span>
                         {% endif %}
@@ -150,6 +150,6 @@
 
 {% if post %}
     {% block meta %}
-        {% meta_tags title=post.title description=post.excerpt|add:" - By @"|add:post.author.username keywords=post.tags image=post.featured_image %}
+        {% meta_tags title=post.title description=post.excerpt|add:" - By @"|add:post.author.username keywords=post.tags image=post.featured_image author="@"|add:post.author.username|add:" "|add:post.author.first_name|add:" "|add:post.author.last_name%}
     {% endblock meta %}
 {% endif %}

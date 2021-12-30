@@ -74,10 +74,11 @@ def replace(value, args=","):
 @register.inclusion_tag('components/meta-tags.html')
 def meta_tags(title="", description="Share your thoughts with ease, freedom and simplicity",
               keywords="blog, easyblog, blogging, share, thoughts, world, 'cms', freedom, simplicity, easy, rehman, hayaturehman, ahmadzai",
-              image="http://i.imgur.com/RImMfPo.png"):
+              image="http://i.imgur.com/RImMfPo.png", author="EasyBlog by Ahmadz.ai"):
     return {
         'title': title + ' | Easy Blog',
         'description': description,
         'keywords': keywords,
         'image': image or 'http://i.imgur.com/RImMfPo.png',
+        'author': author or "Easy Blog by Ahmadz.ai"
     }

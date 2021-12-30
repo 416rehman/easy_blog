@@ -150,6 +150,6 @@
 
 {% if post %}
     {% block meta %}
-        {% meta_tags title=post.title description=post.excerpt keywords=post.tags image=post.featured_image or 'http://i.imgur.com/RImMfPo.png' %}
+        {% meta_tags title=post.title description=post.excerpt|add:" - By @"|add:post.author.username keywords=post.tags image=post.featured_image %}
     {% endblock meta %}
 {% endif %}

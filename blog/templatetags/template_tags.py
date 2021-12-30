@@ -22,7 +22,8 @@ def profile_card(request, user=None, minimal=False, model_object=True):
                 user.profile.avatar),
             'banner': 'http://s3.amazonaws.com/' + settings.AWS_STORAGE_BUCKET_NAME + '/' + settings.AWS_PUBLIC_MEDIA_LOCATION + '/' + str(
                 user.profile.banner),
-            'following': user.followers.filter(username=request.user.username).exists() if request.user.is_authenticated else False,
+            'following': user.followers.filter(
+                username=request.user.username).exists() if request.user.is_authenticated else False,
             'follows_back': request.user.is_followed_by(user.username) if request.user.is_authenticated else False,
             'follower_count': user.count_followers,
             'following_count': user.count_following,
@@ -71,10 +72,12 @@ def replace(value, args=","):
 
 
 @register.inclusion_tag('components/meta-tags.html')
-def meta_tags(title="", description="Share your thoughts with ease, freedom and simplicity", keywords="blog, easyblog, blogging, share, thoughts, world, 'cms', freedom, simplicity, easy, rehman, hayaturehman, ahmadzai", image="http://i.imgur.com/RImMfPo.png"):
+def meta_tags(title="", description="Share your thoughts with ease, freedom and simplicity",
+              keywords="blog, easyblog, blogging, share, thoughts, world, 'cms', freedom, simplicity, easy, rehman, hayaturehman, ahmadzai",
+              image="http://i.imgur.com/RImMfPo.png"):
     return {
         'title': title + ' | Easy Blog',
         'description': description,
         'keywords': keywords,
-        'image': image,
+        'image': image or 'http://i.imgur.com/RImMfPo.png',
     }

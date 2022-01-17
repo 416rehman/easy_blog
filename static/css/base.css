@@ -75,7 +75,6 @@ a.postcard{text-decoration: none}
 }
 
 .postcard #postTitle {
-    font-size: min(4vw, 22px);
     margin: 0 0 5px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -354,6 +353,7 @@ span.tag:not(code *, pre *) {
     border-radius: 15px;
     color: #93aac5;
     font-weight: 100;
+    font-size: 1rem;
 }
 code, code * {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
@@ -404,6 +404,22 @@ iframe {
 }
 .pagination {
     border-radius: var(--border-radius);
+}
+
+.buttoned-style {
+    background-color: var(--tertiary-color);
+    color: var(--text-color-dim);
+    border-color: var(--button-border);
+    border: 1px solid var(--button-border);
+    border-radius: var(--border-radius);
+    padding: 7.5px 15px;
+    box-shadow: 0 3px 0px 0 rgb(0 0 0 / 20%), 0 8px 5px 0 rgb(0 0 0 / 20%);
+    transition: background-color 0.5s ease;
+}
+.buttoned-style:active {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 white;
+    outline: none;
 }
 
 @media only screen and (max-width: 600px){

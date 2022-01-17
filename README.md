@@ -3,7 +3,6 @@
 </p>
 #Easy Blog - A blogging platform
 Share your thoughts with ease, freedom and simplicity
-
 ## What is Easy Blog?
 A blogging platform powered by Django, ElasticSearch, AWS, Sqlite3 and Docker, with a simple and intuitive interface.
 

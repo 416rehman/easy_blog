@@ -5,17 +5,27 @@
     max-height: 100vh;
     width: 100%;
 }
+
 .articlebody #postInfo {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 10px;
 }
-.articlebody #postInfo  * {
+
+.articlebody #postInfo * {
     font-family: "Merriweather Sans", sans-serif;
 }
 
-.articlebody *:not(code, button) { font-family: 'Tinos', serif; }
-.articlebody img { max-width: 100%; height: auto;}
+.articlebody *:not(code, button) {
+    font-family: 'Tinos', serif;
+}
+
+.articlebody img {
+    max-width: 100%;
+    height: auto;
+}
+
 .articlebody code:not(.code-toolbar *) {
     background-color: #82828252 !important;
     border-radius: 3px;
@@ -31,13 +41,13 @@
 }
 
 .articlebody {
-  	width: 950px;
+    width: 950px;
     max-width: 100%;
     padding: 15px;
     height: 100vh;
 }
 
-.articlebody #postExcerpt, .articlebody #id_excerpt  {
+.articlebody #postExcerpt, .articlebody #id_excerpt {
     font-family: 'Tinos', serif;
     font-size: min(6vw, 21px);
     margin-top: 5px;
@@ -60,12 +70,17 @@
     font-weight: 600;
 }
 
-.articlebody #postAuthor { margin-bottom: 0; font-family: 'Merriweather Sans', sans-serif;}
+.articlebody #postAuthor {
+    margin-bottom: 0;
+    font-family: 'Merriweather Sans', sans-serif;
+}
+
 .articlebody #meta {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
+
 .articlebody #meta * {
     color: var(--text-color-dim);
     font-family: 'Merriweather Sans', sans-serif;
@@ -92,7 +107,7 @@ div#author_block {
 
 .articlebody #postContent {
     font-family: 'Tinos', serif;
-    font-size:calc(18px + 0.2vw);
+    font-size: calc(18px + 0.2vw);
     font-weight: 400;
     letter-spacing: 0.003em;
     word-spacing: 0.05em;
@@ -125,4 +140,36 @@ div#author_block {
 
 div#more * {
     font-family: 'Merriweather Sans', sans-serif;
+}
+.tags {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    user-select: none;
+    scrollbar-height: 2px;
+
+    scroll-snap-type: x mandatory;
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    padding: 5px;
+    gap: 5px;
+}
+.tags::-webkit-scrollbar {
+    height: 2px;
+}
+.tags:hover {
+    scrollbar-height: 3px;
+}
+.tags:hover::-webkit-scrollbar {
+    height: 3px;
+}
+.tags a {
+    scroll-snap-align: start;
+}
+
+@media only screen and (max-width: 600px){
+    #toolbar {
+        justify-content: space-between;
+    }
 }

@@ -32,7 +32,6 @@ class UsersManager(UserManager):
                 self.trending = get_user_model().objects.filter(pk__in=post_authors).annotate(
                     total_views=Sum('blog_posts__hourly_views')).order_by('-total_views')
 
-
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     is_email_verified = models.BooleanField(default=False)

@@ -136,8 +136,9 @@ class UserCustomDocumentViewSet(UserDocumentViewSet):
 
         if query and field:
             if field in self.search_fields:
-                request.GET['search'] = '{field}:{query}'.format(field=request.GET['in_field'] if request.GET['in_field'] != 'all' else '',
-                                                                 query=query.split(':')[1] if ':' in query else query)
+                request.GET['search'] = '{field}:{query}'.format(
+                    field=request.GET['in_field'] if request.GET['in_field'] != 'all' else '',
+                    query=query.split(':')[1] if ':' in query else query)
 
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
@@ -161,7 +162,6 @@ class UserCustomDocumentViewSet(UserDocumentViewSet):
                 for follower in r['followers']:
                     r['following'] = True if follower['username'] == request.user.username else False
                 r['follows_back'] = (request.user.followers.filter(username=r['username']).exists())
-
 
         search_url = re.sub('&*(?:page=)\d*', '', request.get_full_path())
         return render(request, 'user_search.html',

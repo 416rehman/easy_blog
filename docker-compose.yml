@@ -1,0 +1,27 @@
+version: "3.9"
+volumes:
+  blog_volume:
+
+services:
+  blog_django_app:
+    container_name: django-easy-blog
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - blog_volume:/app
+      - ./db:/app/db
+    restart: always
+    depends_on:
+      - nginx
+      -
+  nginx:
+    container_name: nginx-easy-blog
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+    volumes:
+      - blog_volume:/app
+    ports:
+      - "8002:80"
+    restart: always

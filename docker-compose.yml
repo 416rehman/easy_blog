@@ -14,7 +14,6 @@ services:
     restart: always
     depends_on:
       - nginx
-      -
   nginx:
     container_name: nginx-easy-blog
     build:

@@ -12,7 +12,11 @@ services:
       - blog_volume:/app
       - ./db:/app/db
     restart: always
-
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    user: root    
   nginx:
     container_name: nginx-easy-blog
     build:
@@ -27,3 +31,11 @@ services:
     restart: always
     depends_on:
       - blog
+  elasticsearch:
+    container_name: esearch_easy-blog
+    image: elasticsearch:7.16.3
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      discovery.type: single-node

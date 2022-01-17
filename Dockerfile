@@ -1,5 +1,5 @@
 #setup uwsgi and app
-FROM python:alpine as blog
+FROM python:3 as blog
 
 RUN apt-get update && \
     apt-get install -y build-essential python vim net-tools && \

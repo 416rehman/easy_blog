@@ -3,7 +3,7 @@ volumes:
   blog_volume:
 
 services:
-  blog_django_app:
+  blog:
     container_name: django-easy-blog
     build:
       context: .
@@ -12,8 +12,7 @@ services:
       - blog_volume:/app
       - ./db:/app/db
     restart: always
-    depends_on:
-      - nginx
+
   nginx:
     container_name: nginx-easy-blog
     build:
@@ -24,3 +23,5 @@ services:
     ports:
       - "8002:80"
     restart: always
+    depends_on:
+      - blog

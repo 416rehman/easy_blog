@@ -8,6 +8,7 @@ A blogging platform powered by Django, ElasticSearch, AWS, Sqlite3 and Docker, w
 
 ## Installation
 - Fill the sample.env file and rename it to .env.
+- Run `python3 manage.py makemigrations` then `migrate` to initialize the database.
 - Run `docker-compose up -d` to start the services.
 - Visit `http://localhost:8002` to see the blog.
 

@@ -1,6 +1,6 @@
 version: "3.9"
 volumes:
-  blog_volume:
+  static:
 
 services:
   blog:
@@ -9,7 +9,7 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - blog_volume:/app
+      - static:/app/static
       - ./db:/app/db
     restart: always
 
@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: nginx.Dockerfile
     volumes:
-      - blog_volume:/app
+      - static:/app/static
     links:
       - blog
     ports:

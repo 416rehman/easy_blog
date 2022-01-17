@@ -20,6 +20,8 @@ services:
       dockerfile: nginx.Dockerfile
     volumes:
       - blog_volume:/app
+    links:
+      - blog
     ports:
       - "8002:80"
     restart: always

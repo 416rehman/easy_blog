@@ -1,7 +1,8 @@
 <p align="center">
   <a href="http://blog.ahmadz.ai"><img src="https://img.shields.io/badge/Live-Demo-blueviolet?style=flat-square"></a>
 </p>
-#Easy Blog - A blogging platform
+
+# Easy Blog - A blogging platform
 Share your thoughts with ease, freedom and simplicity
 ## What is Easy Blog?
 A blogging platform powered by Django, ElasticSearch, AWS, Sqlite3 and Docker, with a simple and intuitive interface.

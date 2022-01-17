@@ -8,5 +8,5 @@ RUN apt-get update && \
 WORKDIR /
 COPY . /app/
 RUN pip install --no-cache-dir -r /app/requirements.txt
-EXPOSE 80
+EXPOSE 8000
 CMD [ "uwsgi", "--ini", "/app/blog_uwsgi.ini" ]

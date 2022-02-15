@@ -65,7 +65,8 @@ class User(AbstractUser):
                 self.is_email_verified = False
         else:
             if not self.is_email_verified and self.email:
-                self.send_activation_email()
+                if self.last_activation_email_sent is None or timezone.now() - self.last_activation_email_sent > timezone.timedelta(seconds=30):
+                    self.send_activation_email()
 
         super(User, self).save(*args, **kwargs)
 
@@ -83,7 +84,6 @@ class User(AbstractUser):
         if send_mail(mail_subject, strip_tags(message), 'Easy Blog <' + settings.DEFAULT_FROM_EMAIL + '>', [to_email],
                   html_message=message, fail_silently=False):
             self.last_activation_email_sent = timezone.now()
-            self.save()
             print('ACTIVATION EMAIL SENT TO {}'.format(to_email))
         else:
             print('ACTIVATION EMAIL NOT SENT TO {}'.format(to_email))

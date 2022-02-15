@@ -190,34 +190,34 @@
 /* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen
    readers do not read off random characters that represent icons */
 .fa-glass:before {
-  content: "\f000";
+  content: \f000;
 }
 .fa-music:before {
-  content: "\f001";
+  content: \f001;
 }
 .fa-search:before {
-  content: "\f002";
+  content: \f002;
 }
 .fa-envelope-o:before {
-  content: "\f003";
+  content: \f003;
 }
 .fa-heart:before {
-  content: "\f004";
+  content: \f004;
 }
 .fa-star:before {
-  content: "\f005";
+  content: \f005;
 }
 .fa-star-o:before {
-  content: "\f006";
+  content: \f006;
 }
 .fa-user:before {
-  content: "\f007";
+  content: \f007;
 }
 .fa-film:before {
-  content: "\f008";
+  content: \f008;
 }
 .fa-th-large:before {
-  content: "\f009";
+  content: \f009";
 }
 .fa-th:before {
   content: "\f00a";

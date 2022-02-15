@@ -81,7 +81,7 @@ pre.highlight code {
 .sidebar .menu-list ul :not(collapsed) .arrow:before,
 .sidebar .menu-list li :not(collapsed) .arrow:before {
   font-family: FontAwesome;
-  content: "\f078";
+  content: \f078;
   display: inline-block;
   padding-left: 10px;
   padding-right: 10px;
@@ -134,7 +134,7 @@ pre.highlight code {
   font-family: FontAwesome;
   font-size: 14px;
   font-weight: bold;
-  content: "\f105";
+  content: \f105;
   display: inline;
   vertical-align: middle;
   padding-left: 0;

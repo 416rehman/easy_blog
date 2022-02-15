@@ -1,31 +1,31 @@
 // NOTE: Source: npm package: emojilib, file:emojis.json
-window.tinymce.Resource.add("tinymce.plugins.emoticons", {
+window.tinymce.Resource.add(tinymce.plugins.emoticons, {
   grinning: {
-    keywords: [ "face", "smile", "happy", "joy", ":D", "grin" ],
-    "char": "\ud83d\ude00",
+    keywords: [ face, smile, happy, joy, :D, grin ],
+    char: \ud83d\ude00,
     fitzpatrick_scale: false,
-    category: "people"
+    category: people
   },
   grimacing: {
-    keywords: [ "face", "grimace", "teeth" ],
-    "char": "\ud83d\ude2c",
+    keywords: [ face, grimace, teeth ],
+    char: \ud83d\ude2c,
     fitzpatrick_scale: false,
-    category: "people"
+    category: people
   },
   grin: {
-    keywords: [ "face", "happy", "smile", "joy", "kawaii" ],
-    "char": "\ud83d\ude01",
+    keywords: [ face, happy, smile, joy, kawaii ],
+    char: \ud83d\ude01,
     fitzpatrick_scale: false,
-    category: "people"
+    category: people
   },
   joy: {
-    keywords: [ "face", "cry", "tears", "weep", "happy", "happytears", "haha" ],
-    "char": "\ud83d\ude02",
+    keywords: [ face, cry, tears, weep, happy, happytears, haha ],
+    char: \ud83d\ude02,
     fitzpatrick_scale: false,
-    category: "people"
+    category: people
   },
   rofl: {
-    keywords: [ "face", "rolling", "floor", "laughing", "lol", "haha" ],
+    keywords: [ face, rolling", "floor", "laughing", "lol", "haha" ],
     "char": "\ud83e\udd23",
     fitzpatrick_scale: false,
     category: "people"

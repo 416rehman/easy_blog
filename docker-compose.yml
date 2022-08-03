@@ -1,15 +1,15 @@
 version: "3.9"
 volumes:
-  blog_volume:
+  easyblog_volume:
 
 services:
   blog:
-    container_name: django-easy-blog
+    container_name: easyblog-django
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - blog_volume:/app
+      - easyblog_volume:/app
       - ./db:/app/db
     restart: always
     links:
@@ -18,12 +18,12 @@ services:
       - elasticsearch
     user: root    
   nginx:
-    container_name: nginx-easy-blog
+    container_name: easyblog-nginx
     build:
       context: .
       dockerfile: nginx.Dockerfile
     volumes:
-      - blog_volume:/app
+      - easyblog_volume:/app
     links:
       - blog
     ports:
@@ -32,7 +32,7 @@ services:
     depends_on:
       - blog
   elasticsearch:
-    container_name: esearch_easy-blog
+    container_name: easyblog-elasticsearch
     image: elasticsearch:7.16.3
     restart: always
     ports:

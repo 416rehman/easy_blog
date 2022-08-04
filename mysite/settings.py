@@ -31,7 +31,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "blog/static"),
 ]
-print(os.path.join(BASE_DIR, "blog/static"))
+
 mimetypes.add_type("text/css", ".css", True)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -104,7 +104,9 @@ CSP_SCRIPT_SRC = [
     "'unsafe-inline'",
     "'unsafe-eval'",
     "gist.github.com",
-    "https://cdnjs.cloudflare.com",
+    "ajax.cloudflare.com",
+    "static.cloudflareinsights.com",
+    "cdnjs.cloudflare.com",
     "https://fonts.googleapis.com",
     "https://unpkg.com",
     "http://127.0.0.1:8000/"
@@ -112,10 +114,12 @@ CSP_SCRIPT_SRC = [
 CSP_STYLE_SRC = ["'self'",
                  "'unsafe-inline'",
                  "https://github.githubassets.com",
+                 "ajax.cloudflare.com",
+                 "static.cloudflareinsights.com",
                  "cdnjs.cloudflare.com",
                  "https://fonts.googleapis.com"]
 CSP_FONT_SRC = ['https://fonts.gstatic.com']
-CSP_CONNECT_SRC = ["'self'", 'https://unpkg.com/']
+CSP_CONNECT_SRC = ["'self'", 'https://unpkg.com/', "cloudflareinsights.com"]
 CSP_INCLUDE_NONCE_IN = ['script-src']
 CSP_OBJECT_SRC = ["'none'"]
 # CSP_REPORT_URI = ["http://localhost:8000/fake-report-uri/"]
